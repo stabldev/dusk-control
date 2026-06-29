@@ -11,10 +11,10 @@ namespace dusk;
 /// </summary>
 public sealed partial class MainPage : Page
 {
-    public MainPage()
-    {
-        InitializeComponent();
+  public MainPage()
+  {
+    InitializeComponent();
 
-        // TODO: Add your initialization logic here.
-    }
+    // TODO: Add your initialization logic here.
+  }
 }
