@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "winui-design": {
+      "source": "microsoft/win-dev-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/winui/skills/winui-design/SKILL.md",
+      "computedHash": "f6be1094ae87b1a7c6df5a41fc5b2e8e994d18bd15c0ec466fc5684ea8bd9cb1"
+    }
+  }
+}
