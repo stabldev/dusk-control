@@ -1,9 +1,9 @@
 {
   "profiles": {
-    "dusk (Package)": {
+    "Dusk (Package)": {
       "commandName": "MsixPackage"
     },
-    "dusk (Unpackaged)": {
+    "Dusk (Unpackaged)": {
       "commandName": "Project"
     }
   }
