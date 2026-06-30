@@ -36,7 +36,7 @@ public class TrayService : IDisposable
       uFlags = (int)(Win32.NIF_MESSAGE | Win32.NIF_ICON | Win32.NIF_TIP),
       uCallbackMessage = (int)Win32.WM_TRAYICON,
       hIcon = _hIcon,
-      szTip = "Dusk"
+      szTip = "Dusk Control"
     };
 
     Win32.Shell_NotifyIcon(Win32.NIM_ADD, ref nid);
