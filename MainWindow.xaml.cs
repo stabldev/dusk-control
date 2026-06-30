@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Windowing;
+using dusk.Services;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -13,6 +14,9 @@ namespace dusk;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
+  private TrayService? _trayService;
+  private bool _isExiting = false;
+
   public MainWindow()
   {
     InitializeComponent();
@@ -43,5 +47,28 @@ public sealed partial class MainWindow : Window
 
     // Navigate the root frame to the main page on startup.
     RootFrame.Navigate(typeof(MainPage));
+
+    // Initialize Tray Icon and intercept close
+    _trayService = new TrayService(this);
+    Closed += MainWindow_Closed;
+  }
+
+  private void MainWindow_Closed(object sender, WindowEventArgs args)
+  {
+    if (!_isExiting)
+    {
+      args.Handled = true;
+      AppWindow.Hide();
+    }
+    else
+    {
+      _trayService?.Dispose();
+    }
+  }
+
+  public void ExitApplication()
+  {
+    _isExiting = true;
+    Close();
   }
 }
