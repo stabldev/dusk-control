@@ -1,8 +1,9 @@
+#pragma warning disable SYSLIB1054
 using System.Runtime.InteropServices;
 
 namespace dusk.Helpers;
 
-public static class Win32
+internal static class Win32
 {
   public const uint WM_USER = 0x0400;
   public const uint WM_TRAYICON = WM_USER + 101;
@@ -59,38 +60,38 @@ public static class Win32
   public delegate IntPtr SUBCLASSPROC(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, uint uIdSubclass, IntPtr dwRefData);
 
   [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-  public static extern bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);
+  internal static extern bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);
 
-  [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-  public static extern IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
+  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+  internal static extern IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
 
   [DllImport("user32.dll")]
-  public static extern bool DestroyIcon(IntPtr hIcon);
+  internal static extern bool DestroyIcon(IntPtr hIcon);
 
   [DllImport("user32.dll", SetLastError = true)]
-  public static extern IntPtr CreatePopupMenu();
+  internal static extern IntPtr CreatePopupMenu();
 
-  [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-  public static extern bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
-
-  [DllImport("user32.dll")]
-  public static extern bool DestroyMenu(IntPtr hMenu);
+  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+  internal static extern bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
 
   [DllImport("user32.dll")]
-  public static extern int TrackPopupMenu(IntPtr hMenu, uint uFlags, int x, int y, int nReserved, IntPtr hWnd, IntPtr prcRect);
+  internal static extern bool DestroyMenu(IntPtr hMenu);
 
   [DllImport("user32.dll")]
-  public static extern bool GetCursorPos(out POINT lpPoint);
+  internal static extern int TrackPopupMenu(IntPtr hMenu, uint uFlags, int x, int y, int nReserved, IntPtr hWnd, IntPtr prcRect);
 
   [DllImport("user32.dll")]
-  public static extern bool SetForegroundWindow(IntPtr hWnd);
+  internal static extern bool GetCursorPos(out POINT lpPoint);
 
-  [DllImport("comctl32.dll", CharSet = CharSet.Auto)]
-  public static extern bool SetWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass, IntPtr dwRefData);
+  [DllImport("user32.dll")]
+  internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
-  [DllImport("comctl32.dll", CharSet = CharSet.Auto)]
-  public static extern IntPtr DefSubclassProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+  [DllImport("comctl32.dll")]
+  internal static extern bool SetWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass, IntPtr dwRefData);
 
-  [DllImport("comctl32.dll", CharSet = CharSet.Auto)]
-  public static extern bool RemoveWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass);
+  [DllImport("comctl32.dll")]
+  internal static extern IntPtr DefSubclassProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+
+  [DllImport("comctl32.dll")]
+  internal static extern bool RemoveWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass);
 }
