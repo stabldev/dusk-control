@@ -14,7 +14,7 @@ namespace dusk;
 /// </summary>
 public sealed partial class MainWindow : Window
 {
-  private TrayService? _trayService;
+  private readonly TrayService? _trayService;
   private bool _isExiting = false;
 
   public MainWindow()
@@ -35,15 +35,7 @@ public sealed partial class MainWindow : Window
     }
 
     // Position window at bottom right corner above the taskbar with some padding
-    var displayArea = DisplayArea.Primary;
-    if (displayArea != null)
-    {
-      var workArea = displayArea.WorkArea;
-      int padding = 6;
-      int x = workArea.X + workArea.Width - AppWindow.Size.Width - padding;
-      int y = workArea.Y + workArea.Height - AppWindow.Size.Height - padding;
-      AppWindow.Move(new Windows.Graphics.PointInt32(x, y));
-    }
+    ResetPosition();
 
     // Navigate the root frame to the main page on startup.
     RootFrame.Navigate(typeof(MainPage));
@@ -63,6 +55,19 @@ public sealed partial class MainWindow : Window
     else
     {
       _trayService?.Dispose();
+    }
+  }
+
+  public void ResetPosition()
+  {
+    var displayArea = DisplayArea.Primary;
+    if (displayArea != null)
+    {
+      var workArea = displayArea.WorkArea;
+      int padding = 6;
+      int x = workArea.X + workArea.Width - AppWindow.Size.Width - padding;
+      int y = workArea.Y + workArea.Height - AppWindow.Size.Height - padding;
+      AppWindow.Move(new Windows.Graphics.PointInt32(x, y));
     }
   }
 

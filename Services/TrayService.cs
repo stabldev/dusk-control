@@ -74,6 +74,7 @@ public class TrayService : IDisposable
     if (hMenu == IntPtr.Zero) return;
 
     Win32.AppendMenu(hMenu, Win32.MF_STRING, 1001, "Open Dusk");
+    Win32.AppendMenu(hMenu, Win32.MF_STRING, 1003, "Reset Position");
     Win32.AppendMenu(hMenu, Win32.MF_STRING, 1002, "Exit");
 
     Win32.GetCursorPos(out Win32.POINT pt);
@@ -86,6 +87,15 @@ public class TrayService : IDisposable
     {
       _window.AppWindow.Show();
       Win32.SetForegroundWindow(_hWnd);
+    }
+    else if (selectedId == 1003)
+    {
+      if (_window is MainWindow mainWindow)
+      {
+        mainWindow.ResetPosition();
+        _window.AppWindow.Show();
+        Win32.SetForegroundWindow(_hWnd);
+      }
     }
     else if (selectedId == 1002)
     {
