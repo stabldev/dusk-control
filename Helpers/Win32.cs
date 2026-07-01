@@ -94,4 +94,70 @@ internal static class Win32
 
   [DllImport("comctl32.dll")]
   internal static extern bool RemoveWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass);
+
+  // Monitor APIs
+  public const int MONITORINFOF_PRIMARY = 1;
+
+  [StructLayout(LayoutKind.Sequential)]
+  internal struct RECT
+  {
+    public int left;
+    public int top;
+    public int right;
+    public int bottom;
+  }
+
+  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+  internal struct MONITORINFOEX
+  {
+    public int cbSize;
+    public RECT rcMonitor;
+    public RECT rcWork;
+    public int dwFlags;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string szDevice;
+  }
+
+  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+  internal struct DISPLAY_DEVICE
+  {
+    public int cb;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+    public string DeviceName;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string DeviceString;
+    public uint StateFlags;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string DeviceID;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string DeviceKey;
+  }
+
+  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+  internal struct PHYSICAL_MONITOR
+  {
+    public IntPtr hPhysicalMonitor;
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+    public string szPhysicalMonitorDescription;
+  }
+
+  internal delegate bool MonitorEnumDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
+
+  [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+  internal static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
+
+  [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+  internal static extern bool EnumDisplayDevices(string? lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
+
+  [DllImport("dxva2.dll", SetLastError = true)]
+  internal static extern bool GetNumberOfPhysicalMonitorsFromHMONITOR(IntPtr hMonitor, ref uint pdwNumberOfPhysicalMonitors);
+
+  [DllImport("dxva2.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+  internal static extern bool GetPhysicalMonitorsFromHMONITOR(IntPtr hMonitor, uint dwPhysicalMonitorArraySize, [Out] PHYSICAL_MONITOR[] pPhysicalMonitorArray);
+
+  [DllImport("dxva2.dll", SetLastError = true)]
+  internal static extern bool DestroyPhysicalMonitors(uint dwPhysicalMonitorArraySize, [In] PHYSICAL_MONITOR[] pPhysicalMonitorArray);
+
+  [DllImport("user32.dll")]
+  internal static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
 }
