@@ -86,7 +86,8 @@
         x:Name="ResetLevelsButton"
         Grid.Column="1"
         HorizontalAlignment="Stretch"
-        Content="Reset levels" />
+        Content="Reset levels"
+        Click="ResetLevelsButton_Click" />
     </Grid>
   </Grid>
 </Page>

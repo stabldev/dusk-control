@@ -32,4 +32,10 @@ public sealed partial class MainPage : Page
       // Prepare for brightness adjustment logic here
     }
   }
+
+  private void ResetLevelsButton_Click(object sender, RoutedEventArgs e)
+  {
+    if (BrightnessSlider != null) BrightnessSlider.Value = 0;
+    if (ContrastSlider != null) ContrastSlider.Value = 50;
+  }
 }
