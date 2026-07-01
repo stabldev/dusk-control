@@ -25,7 +25,7 @@ public sealed partial class MainWindow : Window
     SetTitleBar(AppTitleBar);
 
     AppWindow.SetIcon("Assets/AppIcon.ico");
-    AppWindow.Resize(new Windows.Graphics.SizeInt32(400, 300));
+    AppWindow.Resize(new Windows.Graphics.SizeInt32(350, 250));
 
     if (AppWindow.Presenter is OverlappedPresenter overlappedPresenter)
     {

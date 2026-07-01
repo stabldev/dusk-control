@@ -9,12 +9,84 @@
   xmlns:models="using:dusk.Models"
   mc:Ignorable="d">
   <Grid Padding="14">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
     <ComboBox
       x:Name="MonitorComboBox"
       HorizontalAlignment="Stretch"
       DisplayMemberPath="Name"
       SelectionChanged="MonitorComboBox_SelectionChanged" />
+    <StackPanel Grid.Row="1" Margin="0,14,0,0">
+      <!--  Brightness  -->
+      <Grid ColumnSpacing="10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="65" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-    <!--  Slider will go here later  -->
+        <FontIcon
+          VerticalAlignment="Center"
+          FontSize="16"
+          Glyph="&#xE706;" />
+        <TextBlock
+          Grid.Column="1"
+          VerticalAlignment="Center"
+          Text="Brightness" />
+        <Slider
+          x:Name="BrightnessSlider"
+          Grid.Column="2"
+          VerticalAlignment="Center"
+          Maximum="100"
+          Minimum="-100"
+          Value="0" />
+      </Grid>
+
+      <!--  Contrast  -->
+      <Grid ColumnSpacing="10">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="65" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <FontIcon
+          VerticalAlignment="Center"
+          FontSize="16"
+          Glyph="&#xE793;" />
+        <TextBlock
+          Grid.Column="1"
+          VerticalAlignment="Center"
+          Text="Contrast" />
+        <Slider
+          x:Name="ContrastSlider"
+          Grid.Column="2"
+          VerticalAlignment="Center"
+          Maximum="100"
+          Minimum="0"
+          Value="50" />
+      </Grid>
+    </StackPanel>
+
+    <Grid Grid.Row="2" ColumnSpacing="10">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="*" />
+      </Grid.ColumnDefinitions>
+
+      <Button
+        x:Name="SettingsButton"
+        HorizontalAlignment="Stretch"
+        Content="Settings"
+        IsEnabled="False" />
+      <Button
+        x:Name="ResetLevelsButton"
+        Grid.Column="1"
+        HorizontalAlignment="Stretch"
+        Content="Reset levels" />
+    </Grid>
   </Grid>
 </Page>
