@@ -73,7 +73,7 @@ public class TrayService : IDisposable
     IntPtr hMenu = Win32.CreatePopupMenu();
     if (hMenu == IntPtr.Zero) return;
 
-    Win32.AppendMenu(hMenu, Win32.MF_STRING, 1001, "Open Dusk");
+    Win32.AppendMenu(hMenu, Win32.MF_STRING, 1001, "Open Dusk Control");
     Win32.AppendMenu(hMenu, Win32.MF_STRING, 1003, "Reset Position");
     Win32.AppendMenu(hMenu, Win32.MF_STRING, 1002, "Exit");
 
