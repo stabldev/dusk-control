@@ -10,12 +10,14 @@ namespace dusk;
 public sealed partial class MainPage : Page
 {
   private readonly MonitorService _monitorService;
+  private readonly OverlayService _overlayService;
   private bool _isUpdatingUI = false;
 
   public MainPage()
   {
     InitializeComponent();
     _monitorService = new MonitorService();
+    _overlayService = new OverlayService();
 
     var monitors = _monitorService.GetAvailableMonitors();
     MonitorComboBox.ItemsSource = monitors;
@@ -54,8 +56,17 @@ public sealed partial class MainPage : Page
 
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
     {
-      uint hwBrightness = (uint)Math.Max(0, e.NewValue);
-      _monitorService.SetBrightness(selectedMonitor.HMonitor, hwBrightness);
+      if (e.NewValue >= 0)
+      {
+        _monitorService.SetBrightness(selectedMonitor.HMonitor, (uint)e.NewValue);
+        _overlayService.UpdateOverlay(selectedMonitor.HMonitor, 0);
+      }
+      else
+      {
+        _monitorService.SetBrightness(selectedMonitor.HMonitor, 0);
+        double opacity = Math.Abs(e.NewValue) / 100.0 * 0.85; // Max 85% opacity at -100
+        _overlayService.UpdateOverlay(selectedMonitor.HMonitor, opacity);
+      }
     }
   }
 
@@ -73,5 +84,10 @@ public sealed partial class MainPage : Page
   {
     if (BrightnessSlider != null) BrightnessSlider.Value = 0;
     if (ContrastSlider != null) ContrastSlider.Value = 50;
+
+    if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
+    {
+      _overlayService.UpdateOverlay(selectedMonitor.HMonitor, 0);
+    }
   }
 }

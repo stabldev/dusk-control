@@ -27,6 +27,15 @@ internal static class Win32
   public const uint LR_LOADFROMFILE = 0x00000010;
   public const uint LR_DEFAULTSIZE = 0x00000040;
 
+  public const uint WS_EX_LAYERED = 0x00080000;
+  public const uint WS_EX_TRANSPARENT = 0x00000020;
+  public const uint WS_EX_TOOLWINDOW = 0x00000080;
+  public const uint WS_EX_TOPMOST = 0x00000008;
+  public const uint WS_POPUP = 0x80000000;
+  public const uint LWA_ALPHA = 0x00000002;
+  public const int SWP_NOZORDER = 0x0004;
+  public const int SWP_NOACTIVATE = 0x0010;
+
   [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
   public struct NOTIFYICONDATA
   {
@@ -172,4 +181,60 @@ internal static class Win32
 
   [DllImport("user32.dll")]
   internal static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
+
+  // Overlay API
+  public delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
+
+  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+  public struct WNDCLASSEX
+  {
+    public uint cbSize;
+    public uint style;
+    public WndProcDelegate lpfnWndProc;
+    public int cbClsExtra;
+    public int cbWndExtra;
+    public IntPtr hInstance;
+    public IntPtr hIcon;
+    public IntPtr hCursor;
+    public IntPtr hbrBackground;
+    public string lpszMenuName;
+    public string lpszClassName;
+    public IntPtr hIconSm;
+  }
+
+  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+  internal static extern ushort RegisterClassEx(ref WNDCLASSEX lpwcx);
+
+  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+  internal static extern IntPtr CreateWindowEx(
+      uint dwExStyle,
+      string lpClassName,
+      string lpWindowName,
+      uint dwStyle,
+      int x,
+      int y,
+      int nWidth,
+      int nHeight,
+      IntPtr hWndParent,
+      IntPtr hMenu,
+      IntPtr hInstance,
+      IntPtr lpParam);
+
+  [DllImport("user32.dll", SetLastError = true)]
+  internal static extern bool DestroyWindow(IntPtr hWnd);
+
+  [DllImport("user32.dll", SetLastError = true)]
+  internal static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+
+  [DllImport("user32.dll")]
+  internal static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+
+  [DllImport("user32.dll", SetLastError = true)]
+  internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+  [DllImport("kernel32.dll")]
+  internal static extern IntPtr GetModuleHandle(string? lpModuleName);
+
+  [DllImport("gdi32.dll")]
+  internal static extern IntPtr CreateSolidBrush(uint crColor);
 }
