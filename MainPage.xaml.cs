@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -9,6 +10,7 @@ namespace dusk;
 public sealed partial class MainPage : Page
 {
   private readonly MonitorService _monitorService;
+  private bool _isUpdatingUI = false;
 
   public MainPage()
   {
@@ -29,7 +31,24 @@ public sealed partial class MainPage : Page
   {
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
     {
-      // Prepare for brightness adjustment logic here
+      _isUpdatingUI = true;
+      var brightness = _monitorService.GetBrightness(selectedMonitor.HMonitor);
+      if (brightness.HasValue && BrightnessSlider != null)
+      {
+        BrightnessSlider.Value = brightness.Value;
+      }
+      _isUpdatingUI = false;
+    }
+  }
+
+  private void BrightnessSlider_ValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+  {
+    if (_isUpdatingUI) return;
+
+    if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
+    {
+      uint hwBrightness = (uint)Math.Max(0, e.NewValue);
+      _monitorService.SetBrightness(selectedMonitor.HMonitor, hwBrightness);
     }
   }
 

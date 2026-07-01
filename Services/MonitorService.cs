@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Management;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
@@ -31,7 +32,8 @@ public class MonitorService
         {
           Name = displayName,
           IsPrimary = isPrimary,
-          DisplayArea = null // Removed DisplayArea usage due to WinRT crash
+          DisplayArea = null, // Removed DisplayArea usage due to WinRT crash
+          HMonitor = hMonitor
         });
         index++;
       }
@@ -39,6 +41,121 @@ public class MonitorService
     }, IntPtr.Zero);
 
     return monitors;
+  }
+
+  public uint? GetBrightness(IntPtr hMonitor)
+  {
+    uint count = 0;
+    if (Win32.GetNumberOfPhysicalMonitorsFromHMONITOR(hMonitor, ref count) && count > 0)
+    {
+      var physicalMonitors = new Win32.PHYSICAL_MONITOR[count];
+      if (Win32.GetPhysicalMonitorsFromHMONITOR(hMonitor, count, physicalMonitors))
+      {
+        uint currentBrightness = 50;
+        bool success = Win32.GetMonitorBrightness(physicalMonitors[0].hPhysicalMonitor, out uint min, out currentBrightness, out uint max);
+        Win32.DestroyPhysicalMonitors(count, physicalMonitors);
+        if (success)
+          return currentBrightness;
+      }
+    }
+    return GetWmiBrightness();
+  }
+
+  private uint? GetWmiBrightness()
+  {
+    try
+    {
+      using var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBrightness");
+      foreach (ManagementObject queryObj in searcher.Get())
+      {
+        return (byte)queryObj["CurrentBrightness"];
+      }
+    }
+    catch
+    {
+      // WMI not supported or failed
+    }
+    return null;
+  }
+
+  private void SetWmiBrightness(uint brightness)
+  {
+    try
+    {
+      using var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBrightnessMethods");
+      foreach (ManagementObject queryObj in searcher.Get())
+      {
+        queryObj.InvokeMethod("WmiSetBrightness", new object[] { (uint)0, (byte)brightness });
+        break;
+      }
+    }
+    catch
+    {
+      // WMI not supported or failed
+    }
+  }
+
+  private readonly Dictionary<IntPtr, uint> _pendingBrightness = new();
+  private readonly Dictionary<IntPtr, bool> _isUpdating = new();
+
+  public void SetBrightness(IntPtr hMonitor, uint brightness)
+  {
+    lock (_pendingBrightness)
+    {
+      _pendingBrightness[hMonitor] = brightness;
+
+      if (!_isUpdating.TryGetValue(hMonitor, out bool isRunning) || !isRunning)
+      {
+        _isUpdating[hMonitor] = true;
+        Task.Run(() => ProcessBrightnessQueue(hMonitor));
+      }
+    }
+  }
+
+  private void ProcessBrightnessQueue(IntPtr hMonitor)
+  {
+    while (true)
+    {
+      uint targetBrightness;
+      lock (_pendingBrightness)
+      {
+        if (!_pendingBrightness.TryGetValue(hMonitor, out targetBrightness))
+        {
+          _isUpdating[hMonitor] = false;
+          return;
+        }
+        _pendingBrightness.Remove(hMonitor);
+      }
+
+      uint count = 0;
+      bool useWmiFallback = true;
+      if (Win32.GetNumberOfPhysicalMonitorsFromHMONITOR(hMonitor, ref count) && count > 0)
+      {
+        var physicalMonitors = new Win32.PHYSICAL_MONITOR[count];
+        if (Win32.GetPhysicalMonitorsFromHMONITOR(hMonitor, count, physicalMonitors))
+        {
+          bool anySetSuccess = false;
+          foreach (var pm in physicalMonitors)
+          {
+            if (Win32.SetMonitorBrightness(pm.hPhysicalMonitor, targetBrightness))
+            {
+              anySetSuccess = true;
+            }
+          }
+          Win32.DestroyPhysicalMonitors(count, physicalMonitors);
+
+          if (anySetSuccess)
+          {
+            useWmiFallback = false;
+          }
+        }
+      }
+
+      if (useWmiFallback)
+      {
+        SetWmiBrightness(targetBrightness);
+      }
+    }
   }
 
   private string GetMonitorName(IntPtr hMonitor)

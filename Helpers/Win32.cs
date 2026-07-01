@@ -158,6 +158,12 @@ internal static class Win32
   [DllImport("dxva2.dll", SetLastError = true)]
   internal static extern bool DestroyPhysicalMonitors(uint dwPhysicalMonitorArraySize, [In] PHYSICAL_MONITOR[] pPhysicalMonitorArray);
 
+  [DllImport("dxva2.dll", SetLastError = true)]
+  internal static extern bool GetMonitorBrightness(IntPtr hMonitor, out uint pdwMinimumBrightness, out uint pdwCurrentBrightness, out uint pdwMaximumBrightness);
+
+  [DllImport("dxva2.dll", SetLastError = true)]
+  internal static extern bool SetMonitorBrightness(IntPtr hMonitor, uint dwNewBrightness);
+
   [DllImport("user32.dll")]
   internal static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
 }

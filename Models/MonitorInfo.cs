@@ -10,5 +10,8 @@ public class MonitorInfo
   // WinUI's DisplayArea for reference
   public DisplayArea? DisplayArea { get; set; }
 
+  // The Win32 HMONITOR handle
+  public IntPtr HMonitor { get; set; }
+
   public override string ToString() => Name;
 }

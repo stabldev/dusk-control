@@ -42,6 +42,7 @@
           VerticalAlignment="Center"
           Maximum="100"
           Minimum="-100"
+          ValueChanged="BrightnessSlider_ValueChanged"
           Value="0" />
       </Grid>
 
@@ -86,8 +87,8 @@
         x:Name="ResetLevelsButton"
         Grid.Column="1"
         HorizontalAlignment="Stretch"
-        Content="Reset levels"
-        Click="ResetLevelsButton_Click" />
+        Click="ResetLevelsButton_Click"
+        Content="Reset levels" />
     </Grid>
   </Grid>
 </Page>
