@@ -158,6 +158,72 @@ public class MonitorService
     }
   }
 
+  public uint? GetContrast(IntPtr hMonitor)
+  {
+    uint count = 0;
+    if (Win32.GetNumberOfPhysicalMonitorsFromHMONITOR(hMonitor, ref count) && count > 0)
+    {
+      var physicalMonitors = new Win32.PHYSICAL_MONITOR[count];
+      if (Win32.GetPhysicalMonitorsFromHMONITOR(hMonitor, count, physicalMonitors))
+      {
+        uint currentContrast = 50;
+        bool success = Win32.GetMonitorContrast(physicalMonitors[0].hPhysicalMonitor, out uint min, out currentContrast, out uint max);
+        Win32.DestroyPhysicalMonitors(count, physicalMonitors);
+        if (success)
+          return currentContrast;
+      }
+    }
+    return null;
+  }
+
+  private readonly Dictionary<IntPtr, uint> _pendingContrast = new();
+  private readonly Dictionary<IntPtr, bool> _isUpdatingContrast = new();
+
+  public void SetContrast(IntPtr hMonitor, uint contrast)
+  {
+    lock (_pendingContrast)
+    {
+      _pendingContrast[hMonitor] = contrast;
+
+      if (!_isUpdatingContrast.TryGetValue(hMonitor, out bool isRunning) || !isRunning)
+      {
+        _isUpdatingContrast[hMonitor] = true;
+        Task.Run(() => ProcessContrastQueue(hMonitor));
+      }
+    }
+  }
+
+  private void ProcessContrastQueue(IntPtr hMonitor)
+  {
+    while (true)
+    {
+      uint targetContrast;
+      lock (_pendingContrast)
+      {
+        if (!_pendingContrast.TryGetValue(hMonitor, out targetContrast))
+        {
+          _isUpdatingContrast[hMonitor] = false;
+          return;
+        }
+        _pendingContrast.Remove(hMonitor);
+      }
+
+      uint count = 0;
+      if (Win32.GetNumberOfPhysicalMonitorsFromHMONITOR(hMonitor, ref count) && count > 0)
+      {
+        var physicalMonitors = new Win32.PHYSICAL_MONITOR[count];
+        if (Win32.GetPhysicalMonitorsFromHMONITOR(hMonitor, count, physicalMonitors))
+        {
+          foreach (var pm in physicalMonitors)
+          {
+            Win32.SetMonitorContrast(pm.hPhysicalMonitor, targetContrast);
+          }
+          Win32.DestroyPhysicalMonitors(count, physicalMonitors);
+        }
+      }
+    }
+  }
+
   private string GetMonitorName(IntPtr hMonitor)
   {
     var mi = new Win32.MONITORINFOEX();

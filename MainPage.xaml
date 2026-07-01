@@ -68,6 +68,7 @@
           VerticalAlignment="Center"
           Maximum="100"
           Minimum="0"
+          ValueChanged="ContrastSlider_ValueChanged"
           Value="50" />
       </Grid>
     </StackPanel>

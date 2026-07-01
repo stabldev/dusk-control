@@ -164,6 +164,12 @@ internal static class Win32
   [DllImport("dxva2.dll", SetLastError = true)]
   internal static extern bool SetMonitorBrightness(IntPtr hMonitor, uint dwNewBrightness);
 
+  [DllImport("dxva2.dll", SetLastError = true)]
+  internal static extern bool GetMonitorContrast(IntPtr hMonitor, out uint pdwMinimumContrast, out uint pdwCurrentContrast, out uint pdwMaximumContrast);
+
+  [DllImport("dxva2.dll", SetLastError = true)]
+  internal static extern bool SetMonitorContrast(IntPtr hMonitor, uint dwNewContrast);
+
   [DllImport("user32.dll")]
   internal static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
 }

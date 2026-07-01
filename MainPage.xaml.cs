@@ -37,6 +37,13 @@ public sealed partial class MainPage : Page
       {
         BrightnessSlider.Value = brightness.Value;
       }
+
+      var contrast = _monitorService.GetContrast(selectedMonitor.HMonitor);
+      if (contrast.HasValue && ContrastSlider != null)
+      {
+        ContrastSlider.Value = contrast.Value;
+      }
+
       _isUpdatingUI = false;
     }
   }
@@ -49,6 +56,16 @@ public sealed partial class MainPage : Page
     {
       uint hwBrightness = (uint)Math.Max(0, e.NewValue);
       _monitorService.SetBrightness(selectedMonitor.HMonitor, hwBrightness);
+    }
+  }
+
+  private void ContrastSlider_ValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+  {
+    if (_isUpdatingUI) return;
+
+    if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
+    {
+      _monitorService.SetContrast(selectedMonitor.HMonitor, (uint)e.NewValue);
     }
   }
 
