@@ -76,7 +76,7 @@ internal static partial class Win32
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);
 
-  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  [LibraryImport("user32.dll", EntryPoint = "LoadImageW", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
   internal static partial IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
 
   [LibraryImport("user32.dll")]
@@ -86,7 +86,7 @@ internal static partial class Win32
   [LibraryImport("user32.dll", SetLastError = true)]
   internal static partial IntPtr CreatePopupMenu();
 
-  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  [LibraryImport("user32.dll", EntryPoint = "AppendMenuW", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
 
@@ -170,11 +170,11 @@ internal static partial class Win32
 
   internal delegate bool MonitorEnumDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
 
-  [LibraryImport("user32.dll")]
+  [LibraryImport("user32.dll", EntryPoint = "GetMonitorInfoW")]
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
 
-  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16)]
+  [LibraryImport("user32.dll", EntryPoint = "EnumDisplayDevicesW", StringMarshalling = StringMarshalling.Utf16)]
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool EnumDisplayDevices(string? lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
 
@@ -230,10 +230,10 @@ internal static partial class Win32
     public IntPtr hIconSm;
   }
 
-  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  [LibraryImport("user32.dll", EntryPoint = "RegisterClassExW", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
   internal static partial ushort RegisterClassEx(ref WNDCLASSEX lpwcx);
 
-  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  [LibraryImport("user32.dll", EntryPoint = "CreateWindowExW", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
   internal static partial IntPtr CreateWindowEx(
       uint dwExStyle,
       string lpClassName,
@@ -256,14 +256,14 @@ internal static partial class Win32
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
-  [LibraryImport("user32.dll")]
+  [LibraryImport("user32.dll", EntryPoint = "DefWindowProcW")]
   internal static partial IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
   [LibraryImport("user32.dll", SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
-  [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16)]
+  [LibraryImport("kernel32.dll", EntryPoint = "GetModuleHandleW", StringMarshalling = StringMarshalling.Utf16)]
   internal static partial IntPtr GetModuleHandle(string? lpModuleName);
 
   [LibraryImport("gdi32.dll")]

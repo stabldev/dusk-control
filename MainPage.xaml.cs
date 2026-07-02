@@ -50,6 +50,11 @@ public sealed partial class MainPage : Page
 
   private void BrightnessSlider_ValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
   {
+    if (BrightnessText != null)
+    {
+      BrightnessText.Text = $"{e.NewValue}%";
+    }
+
     if (_isUpdatingUI) return;
 
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
@@ -68,13 +73,50 @@ public sealed partial class MainPage : Page
     }
   }
 
+  private void DecreaseBrightnessButton_Click(object sender, RoutedEventArgs e)
+  {
+    if (BrightnessSlider != null)
+    {
+      BrightnessSlider.Value = Math.Max(BrightnessSlider.Minimum, BrightnessSlider.Value - 5);
+    }
+  }
+
+  private void IncreaseBrightnessButton_Click(object sender, RoutedEventArgs e)
+  {
+    if (BrightnessSlider != null)
+    {
+      BrightnessSlider.Value = Math.Min(BrightnessSlider.Maximum, BrightnessSlider.Value + 5);
+    }
+  }
+
   private void ContrastSlider_ValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
   {
+    if (ContrastText != null)
+    {
+      ContrastText.Text = $"{e.NewValue}%";
+    }
+
     if (_isUpdatingUI) return;
 
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
     {
       _monitorService.SetContrast(selectedMonitor.HMonitor, (uint)e.NewValue);
+    }
+  }
+
+  private void DecreaseContrastButton_Click(object sender, RoutedEventArgs e)
+  {
+    if (ContrastSlider != null)
+    {
+      ContrastSlider.Value = Math.Max(ContrastSlider.Minimum, ContrastSlider.Value - 5);
+    }
+  }
+
+  private void IncreaseContrastButton_Click(object sender, RoutedEventArgs e)
+  {
+    if (ContrastSlider != null)
+    {
+      ContrastSlider.Value = Math.Min(ContrastSlider.Maximum, ContrastSlider.Value + 5);
     }
   }
 

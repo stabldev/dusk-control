@@ -9,6 +9,9 @@ public partial class App : Application
   public App()
   {
     InitializeComponent();
+    this.UnhandledException += (s, e) => {
+        System.IO.File.WriteAllText("crash.txt", e.Exception.ToString() + "\nMessage: " + e.Message);
+    };
   }
 
   protected override void OnLaunched(LaunchActivatedEventArgs args)

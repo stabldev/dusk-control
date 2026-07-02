@@ -19,58 +19,128 @@
       HorizontalAlignment="Stretch"
       DisplayMemberPath="Name"
       SelectionChanged="MonitorComboBox_SelectionChanged" />
-    <StackPanel Grid.Row="1" Margin="0,14,0,0">
+    <StackPanel Grid.Row="1" Margin="0,10,0,0">
       <!--  Brightness  -->
-      <Grid ColumnSpacing="10">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="65" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+      <StackPanel Spacing="2.5">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
 
-        <FontIcon
-          VerticalAlignment="Center"
-          FontSize="16"
-          Glyph="&#xE706;" />
-        <TextBlock
-          Grid.Column="1"
-          VerticalAlignment="Center"
-          Text="Brightness" />
-        <Slider
-          x:Name="BrightnessSlider"
-          Grid.Column="2"
-          VerticalAlignment="Center"
-          Maximum="100"
-          Minimum="-100"
-          ValueChanged="BrightnessSlider_ValueChanged"
-          Value="0" />
-      </Grid>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <FontIcon
+              VerticalAlignment="Center"
+              FontSize="14"
+              Glyph="&#xE706;" />
+            <TextBlock VerticalAlignment="Center" Text="Brightness" />
+          </StackPanel>
+          <TextBlock
+            x:Name="BrightnessText"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Text="0%" />
+        </Grid>
+
+        <Grid ColumnSpacing="10">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <Button
+            Width="24"
+            Height="24"
+            Padding="0"
+            Click="DecreaseBrightnessButton_Click">
+            <FontIcon
+              FontSize="12"
+              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+              Glyph="&#xE738;" />
+          </Button>
+          <Slider
+            x:Name="BrightnessSlider"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Maximum="100"
+            Minimum="-100"
+            ValueChanged="BrightnessSlider_ValueChanged"
+            Value="0" />
+          <Button
+            Grid.Column="2"
+            Width="24"
+            Height="24"
+            Padding="0"
+            Click="IncreaseBrightnessButton_Click">
+            <FontIcon
+              FontSize="12"
+              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+              Glyph="&#xE710;" />
+          </Button>
+        </Grid>
+      </StackPanel>
 
       <!--  Contrast  -->
-      <Grid ColumnSpacing="10">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="Auto" />
-          <ColumnDefinition Width="65" />
-          <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+      <StackPanel Margin="0,2.5,0,0" Spacing="2.5">
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
 
-        <FontIcon
-          VerticalAlignment="Center"
-          FontSize="16"
-          Glyph="&#xE793;" />
-        <TextBlock
-          Grid.Column="1"
-          VerticalAlignment="Center"
-          Text="Contrast" />
-        <Slider
-          x:Name="ContrastSlider"
-          Grid.Column="2"
-          VerticalAlignment="Center"
-          Maximum="100"
-          Minimum="0"
-          ValueChanged="ContrastSlider_ValueChanged"
-          Value="50" />
-      </Grid>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <FontIcon
+              VerticalAlignment="Center"
+              FontSize="14"
+              Glyph="&#xE793;" />
+            <TextBlock VerticalAlignment="Center" Text="Contrast" />
+          </StackPanel>
+          <TextBlock
+            x:Name="ContrastText"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Text="50%" />
+        </Grid>
+
+        <Grid ColumnSpacing="10">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+
+          <Button
+            Width="24"
+            Height="24"
+            Padding="0"
+            Click="DecreaseContrastButton_Click">
+            <FontIcon
+              FontSize="12"
+              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+              Glyph="&#xE738;" />
+          </Button>
+          <Slider
+            x:Name="ContrastSlider"
+            Grid.Column="1"
+            VerticalAlignment="Center"
+            Maximum="100"
+            Minimum="0"
+            ValueChanged="ContrastSlider_ValueChanged"
+            Value="50" />
+          <Button
+            Grid.Column="2"
+            Width="24"
+            Height="24"
+            Padding="0"
+            Click="IncreaseContrastButton_Click">
+            <FontIcon
+              FontSize="12"
+              Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+              Glyph="&#xE710;" />
+          </Button>
+        </Grid>
+      </StackPanel>
     </StackPanel>
 
     <Grid Grid.Row="2" ColumnSpacing="10">
