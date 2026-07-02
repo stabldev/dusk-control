@@ -72,7 +72,7 @@ internal static partial class Win32
 
   public delegate IntPtr SUBCLASSPROC(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, uint uIdSubclass, IntPtr dwRefData);
 
-  [LibraryImport("shell32.dll")]
+  [LibraryImport("shell32.dll", EntryPoint = "Shell_NotifyIconW")]
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);
 
