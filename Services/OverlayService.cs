@@ -7,7 +7,7 @@ namespace DuskControl.Services;
 
 public class OverlayService
 {
-  private readonly Dictionary<IntPtr, IntPtr> _overlays = new();
+  private readonly Dictionary<IntPtr, IntPtr> _overlays = [];
   private readonly Win32.WndProcDelegate _wndProc;
   private readonly string _className = "DuskOverlayClass";
   private bool _classRegistered = false;
@@ -50,8 +50,7 @@ public class OverlayService
 
     if (!_overlays.TryGetValue(hMonitor, out var overlayHwnd))
     {
-      var mi = new Win32.MONITORINFOEX();
-      mi.cbSize = Marshal.SizeOf<Win32.MONITORINFOEX>();
+      var mi = new Win32.MONITORINFOEX { cbSize = Marshal.SizeOf<Win32.MONITORINFOEX>() };
       if (Win32.GetMonitorInfo(hMonitor, ref mi))
       {
         overlayHwnd = Win32.CreateWindowEx(

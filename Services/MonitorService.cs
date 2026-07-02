@@ -11,6 +11,8 @@ using DuskControl.Helpers;
 
 namespace DuskControl.Services;
 
+#pragma warning disable CA1822 // Mark members as static
+
 public class MonitorService
 {
   public List<MonitorInfo> GetAvailableMonitors()
@@ -51,8 +53,7 @@ public class MonitorService
       var physicalMonitors = new Win32.PHYSICAL_MONITOR[count];
       if (Win32.GetPhysicalMonitorsFromHMONITOR(hMonitor, count, physicalMonitors))
       {
-        uint currentBrightness = 50;
-        bool success = Win32.GetMonitorBrightness(physicalMonitors[0].hPhysicalMonitor, out uint min, out currentBrightness, out uint max);
+        bool success = Win32.GetMonitorBrightness(physicalMonitors[0].hPhysicalMonitor, out _, out uint currentBrightness, out _);
         Win32.DestroyPhysicalMonitors(count, physicalMonitors);
         if (success)
           return currentBrightness;
@@ -61,12 +62,12 @@ public class MonitorService
     return GetWmiBrightness();
   }
 
-  private uint? GetWmiBrightness()
+  private static uint? GetWmiBrightness()
   {
     try
     {
       using var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBrightness");
-      foreach (ManagementObject queryObj in searcher.Get())
+      foreach (ManagementBaseObject queryObj in searcher.Get())
       {
         return (byte)queryObj["CurrentBrightness"];
       }
@@ -78,14 +79,15 @@ public class MonitorService
     return null;
   }
 
-  private void SetWmiBrightness(uint brightness)
+  private static void SetWmiBrightness(uint brightness)
   {
     try
     {
       using var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBrightnessMethods");
-      foreach (ManagementObject queryObj in searcher.Get())
+      foreach (ManagementBaseObject baseObj in searcher.Get())
       {
-        queryObj.InvokeMethod("WmiSetBrightness", new object[] { (uint)0, (byte)brightness });
+        var queryObj = (ManagementObject)baseObj;
+        queryObj.InvokeMethod("WmiSetBrightness", [(uint)0, (byte)brightness]);
         break;
       }
     }
@@ -95,8 +97,8 @@ public class MonitorService
     }
   }
 
-  private readonly Dictionary<IntPtr, uint> _pendingBrightness = new();
-  private readonly Dictionary<IntPtr, bool> _isUpdating = new();
+  private readonly Dictionary<IntPtr, uint> _pendingBrightness = [];
+  private readonly Dictionary<IntPtr, bool> _isUpdating = [];
 
   public void SetBrightness(IntPtr hMonitor, uint brightness)
   {
@@ -166,8 +168,7 @@ public class MonitorService
       var physicalMonitors = new Win32.PHYSICAL_MONITOR[count];
       if (Win32.GetPhysicalMonitorsFromHMONITOR(hMonitor, count, physicalMonitors))
       {
-        uint currentContrast = 50;
-        bool success = Win32.GetMonitorContrast(physicalMonitors[0].hPhysicalMonitor, out uint min, out currentContrast, out uint max);
+        bool success = Win32.GetMonitorContrast(physicalMonitors[0].hPhysicalMonitor, out _, out uint currentContrast, out _);
         Win32.DestroyPhysicalMonitors(count, physicalMonitors);
         if (success)
           return currentContrast;
@@ -176,8 +177,8 @@ public class MonitorService
     return null;
   }
 
-  private readonly Dictionary<IntPtr, uint> _pendingContrast = new();
-  private readonly Dictionary<IntPtr, bool> _isUpdatingContrast = new();
+  private readonly Dictionary<IntPtr, uint> _pendingContrast = [];
+  private readonly Dictionary<IntPtr, bool> _isUpdatingContrast = [];
 
   public void SetContrast(IntPtr hMonitor, uint contrast)
   {
@@ -224,7 +225,7 @@ public class MonitorService
     }
   }
 
-  private string GetMonitorName(IntPtr hMonitor)
+  private static string GetMonitorName(IntPtr hMonitor)
   {
     var mi = new Win32.MONITORINFOEX();
     mi.cbSize = Marshal.SizeOf(mi);

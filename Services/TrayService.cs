@@ -4,7 +4,7 @@ using DuskControl.Helpers;
 
 namespace DuskControl.Services;
 
-public class TrayService : IDisposable
+public partial class TrayService : IDisposable
 {
   private readonly Window _window;
   private readonly IntPtr _hWnd;
@@ -109,6 +109,7 @@ public class TrayService : IDisposable
   public void Dispose()
   {
     if (_isDisposed) return;
+    GC.SuppressFinalize(this);
 
     var nid = new Win32.NOTIFYICONDATA
     {

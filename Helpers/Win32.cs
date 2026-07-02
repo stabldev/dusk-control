@@ -232,7 +232,7 @@ internal static class Win32
   [DllImport("user32.dll", SetLastError = true)]
   internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
-  [DllImport("kernel32.dll")]
+  [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
   internal static extern IntPtr GetModuleHandle(string? lpModuleName);
 
   [DllImport("gdi32.dll")]
