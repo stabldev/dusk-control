@@ -49,15 +49,8 @@ public partial class TrayService : IDisposable
       var mouseMsg = (uint)lParam.ToInt32();
       if (mouseMsg == Win32.WM_LBUTTONUP)
       {
-        if (_window.AppWindow.IsVisible)
-        {
-          _window.AppWindow.Hide();
-        }
-        else
-        {
-          _window.AppWindow.Show();
-          Win32.SetForegroundWindow(_hWnd);
-        }
+        _window.AppWindow.Show();
+        Win32.SetForegroundWindow(_hWnd);
       }
       else if (mouseMsg == Win32.WM_RBUTTONUP)
       {
