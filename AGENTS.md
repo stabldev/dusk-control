@@ -2,7 +2,7 @@
 
 ## Project
 
-**Dusk** is a lightweight native Windows brightness utility built with **C#**, **.NET**, and **WinUI 3**.
+**Dusk Control** is a lightweight native Windows brightness utility built with **C#**, **.NET**, and **WinUI 3**.
 
 It combines two approaches to display brightness:
 
@@ -181,7 +181,7 @@ Before adding a NuGet package:
 
 # Build Philosophy
 
-Dusk should feel like a small Windows utility rather than a large application.
+Dusk Control should feel like a small Windows utility rather than a large application.
 
 Every feature should be:
 

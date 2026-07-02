@@ -1,6 +1,6 @@
 using Microsoft.UI.Windowing;
 
-namespace dusk.Models;
+namespace DuskControl.Models;
 
 public class MonitorInfo
 {

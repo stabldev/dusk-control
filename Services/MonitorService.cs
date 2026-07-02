@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Display;
 using Microsoft.UI.Windowing;
-using dusk.Models;
-using dusk.Helpers;
+using DuskControl.Models;
+using DuskControl.Helpers;
 
-namespace dusk.Services;
+namespace DuskControl.Services;
 
 public class MonitorService
 {

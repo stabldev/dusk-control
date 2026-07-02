@@ -1,7 +1,7 @@
 #pragma warning disable SYSLIB1054
 using System.Runtime.InteropServices;
 
-namespace dusk.Helpers;
+namespace DuskControl.Helpers;
 
 internal static class Win32
 {
