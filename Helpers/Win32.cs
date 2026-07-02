@@ -1,9 +1,8 @@
-#pragma warning disable SYSLIB1054
 using System.Runtime.InteropServices;
 
 namespace DuskControl.Helpers;
 
-internal static class Win32
+internal static partial class Win32
 {
   public const uint WM_USER = 0x0400;
   public const uint WM_TRAYICON = WM_USER + 101;
@@ -36,8 +35,16 @@ internal static class Win32
   public const int SWP_NOZORDER = 0x0004;
   public const int SWP_NOACTIVATE = 0x0010;
 
-  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-  public struct NOTIFYICONDATA
+  public static unsafe void SetFixedString(char* dest, int destLength, string value)
+  {
+    if (value == null) { dest[0] = '\0'; return; }
+    int len = Math.Min(value.Length, destLength - 1);
+    value.AsSpan(0, len).CopyTo(new Span<char>(dest, len));
+    dest[len] = '\0';
+  }
+
+  [StructLayout(LayoutKind.Sequential)]
+  public unsafe struct NOTIFYICONDATA
   {
     public int cbSize;
     public IntPtr hWnd;
@@ -45,15 +52,12 @@ internal static class Win32
     public int uFlags;
     public int uCallbackMessage;
     public IntPtr hIcon;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-    public string szTip;
+    public fixed char szTip[128];
     public int dwState;
     public int dwStateMask;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 256)]
-    public string szInfo;
+    public fixed char szInfo[256];
     public int uTimeoutOrVersion;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 64)]
-    public string szInfoTitle;
+    public fixed char szInfoTitle[64];
     public int dwInfoFlags;
     public Guid guidItem;
     public IntPtr hBalloonIcon;
@@ -68,41 +72,49 @@ internal static class Win32
 
   public delegate IntPtr SUBCLASSPROC(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam, uint uIdSubclass, IntPtr dwRefData);
 
-  [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-  internal static extern bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);
+  [LibraryImport("shell32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool Shell_NotifyIcon(uint dwMessage, ref NOTIFYICONDATA lpData);
 
-  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-  internal static extern IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
+  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  internal static partial IntPtr LoadImage(IntPtr hInst, string lpszName, uint uType, int cx, int cy, uint fuLoad);
 
-  [DllImport("user32.dll")]
-  internal static extern bool DestroyIcon(IntPtr hIcon);
+  [LibraryImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool DestroyIcon(IntPtr hIcon);
 
-  [DllImport("user32.dll", SetLastError = true)]
-  internal static extern IntPtr CreatePopupMenu();
+  [LibraryImport("user32.dll", SetLastError = true)]
+  internal static partial IntPtr CreatePopupMenu();
 
-  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-  internal static extern bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
+  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool AppendMenu(IntPtr hMenu, uint uFlags, uint uIDNewItem, string lpNewItem);
 
-  [DllImport("user32.dll")]
-  internal static extern bool DestroyMenu(IntPtr hMenu);
+  [LibraryImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool DestroyMenu(IntPtr hMenu);
 
-  [DllImport("user32.dll")]
-  internal static extern int TrackPopupMenu(IntPtr hMenu, uint uFlags, int x, int y, int nReserved, IntPtr hWnd, IntPtr prcRect);
+  [LibraryImport("user32.dll")]
+  internal static partial int TrackPopupMenu(IntPtr hMenu, uint uFlags, int x, int y, int nReserved, IntPtr hWnd, IntPtr prcRect);
 
-  [DllImport("user32.dll")]
-  internal static extern bool GetCursorPos(out POINT lpPoint);
+  [LibraryImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool GetCursorPos(out POINT lpPoint);
 
-  [DllImport("user32.dll")]
-  internal static extern bool SetForegroundWindow(IntPtr hWnd);
+  [LibraryImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool SetForegroundWindow(IntPtr hWnd);
 
-  [DllImport("comctl32.dll")]
-  internal static extern bool SetWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass, IntPtr dwRefData);
+  [LibraryImport("comctl32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool SetWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass, IntPtr dwRefData);
 
-  [DllImport("comctl32.dll")]
-  internal static extern IntPtr DefSubclassProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+  [LibraryImport("comctl32.dll")]
+  internal static partial IntPtr DefSubclassProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
-  [DllImport("comctl32.dll")]
-  internal static extern bool RemoveWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass);
+  [LibraryImport("comctl32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool RemoveWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass);
 
   // Monitor APIs
   public const int MONITORINFOF_PRIMARY = 1;
@@ -116,97 +128,113 @@ internal static class Win32
     public int bottom;
   }
 
-  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-  internal struct MONITORINFOEX
+  [StructLayout(LayoutKind.Sequential)]
+  internal unsafe struct MONITORINFOEX
   {
     public int cbSize;
     public RECT rcMonitor;
     public RECT rcWork;
     public int dwFlags;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    public string szDevice;
+    public fixed char szDevice[32];
+
+    public string DeviceName
+    {
+      get
+      {
+        fixed (char* p = szDevice)
+          return new string(p);
+      }
+    }
   }
 
-  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-  internal struct DISPLAY_DEVICE
+  [StructLayout(LayoutKind.Sequential)]
+  internal unsafe struct DISPLAY_DEVICE
   {
     public int cb;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-    public string DeviceName;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-    public string DeviceString;
+    public fixed char DeviceName[32];
+    public fixed char DeviceString[128];
     public uint StateFlags;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-    public string DeviceID;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-    public string DeviceKey;
+    public fixed char DeviceID[128];
+    public fixed char DeviceKey[128];
+
+    public string DeviceIDStr { get { fixed (char* p = DeviceID) return new string(p); } }
+    public string DeviceStringStr { get { fixed (char* p = DeviceString) return new string(p); } }
   }
 
-  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-  internal struct PHYSICAL_MONITOR
+  [StructLayout(LayoutKind.Sequential)]
+  internal unsafe struct PHYSICAL_MONITOR
   {
     public IntPtr hPhysicalMonitor;
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
-    public string szPhysicalMonitorDescription;
+    public fixed char szPhysicalMonitorDescription[128];
   }
 
   internal delegate bool MonitorEnumDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
 
-  [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-  internal static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
+  [LibraryImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
 
-  [DllImport("user32.dll", CharSet = CharSet.Unicode)]
-  internal static extern bool EnumDisplayDevices(string? lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
+  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool EnumDisplayDevices(string? lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
 
-  [DllImport("dxva2.dll", SetLastError = true)]
-  internal static extern bool GetNumberOfPhysicalMonitorsFromHMONITOR(IntPtr hMonitor, ref uint pdwNumberOfPhysicalMonitors);
+  [LibraryImport("dxva2.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool GetNumberOfPhysicalMonitorsFromHMONITOR(IntPtr hMonitor, ref uint pdwNumberOfPhysicalMonitors);
 
-  [DllImport("dxva2.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-  internal static extern bool GetPhysicalMonitorsFromHMONITOR(IntPtr hMonitor, uint dwPhysicalMonitorArraySize, [Out] PHYSICAL_MONITOR[] pPhysicalMonitorArray);
+  [LibraryImport("dxva2.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool GetPhysicalMonitorsFromHMONITOR(IntPtr hMonitor, uint dwPhysicalMonitorArraySize, [Out] PHYSICAL_MONITOR[] pPhysicalMonitorArray);
 
-  [DllImport("dxva2.dll", SetLastError = true)]
-  internal static extern bool DestroyPhysicalMonitors(uint dwPhysicalMonitorArraySize, [In] PHYSICAL_MONITOR[] pPhysicalMonitorArray);
+  [LibraryImport("dxva2.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool DestroyPhysicalMonitors(uint dwPhysicalMonitorArraySize, [In] PHYSICAL_MONITOR[] pPhysicalMonitorArray);
 
-  [DllImport("dxva2.dll", SetLastError = true)]
-  internal static extern bool GetMonitorBrightness(IntPtr hMonitor, out uint pdwMinimumBrightness, out uint pdwCurrentBrightness, out uint pdwMaximumBrightness);
+  [LibraryImport("dxva2.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool GetMonitorBrightness(IntPtr hMonitor, out uint pdwMinimumBrightness, out uint pdwCurrentBrightness, out uint pdwMaximumBrightness);
 
-  [DllImport("dxva2.dll", SetLastError = true)]
-  internal static extern bool SetMonitorBrightness(IntPtr hMonitor, uint dwNewBrightness);
+  [LibraryImport("dxva2.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool SetMonitorBrightness(IntPtr hMonitor, uint dwNewBrightness);
 
-  [DllImport("dxva2.dll", SetLastError = true)]
-  internal static extern bool GetMonitorContrast(IntPtr hMonitor, out uint pdwMinimumContrast, out uint pdwCurrentContrast, out uint pdwMaximumContrast);
+  [LibraryImport("dxva2.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool GetMonitorContrast(IntPtr hMonitor, out uint pdwMinimumContrast, out uint pdwCurrentContrast, out uint pdwMaximumContrast);
 
-  [DllImport("dxva2.dll", SetLastError = true)]
-  internal static extern bool SetMonitorContrast(IntPtr hMonitor, uint dwNewContrast);
+  [LibraryImport("dxva2.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool SetMonitorContrast(IntPtr hMonitor, uint dwNewContrast);
 
-  [DllImport("user32.dll")]
-  internal static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
+  [LibraryImport("user32.dll")]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
 
   // Overlay API
   public delegate IntPtr WndProcDelegate(IntPtr hWnd, uint msg, IntPtr wParam, IntPtr lParam);
 
-  [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+  [StructLayout(LayoutKind.Sequential)]
   public struct WNDCLASSEX
   {
     public uint cbSize;
     public uint style;
-    public WndProcDelegate lpfnWndProc;
+    public IntPtr lpfnWndProc;
     public int cbClsExtra;
     public int cbWndExtra;
     public IntPtr hInstance;
     public IntPtr hIcon;
     public IntPtr hCursor;
     public IntPtr hbrBackground;
-    public string lpszMenuName;
-    public string lpszClassName;
+    public IntPtr lpszMenuName;
+    public IntPtr lpszClassName;
     public IntPtr hIconSm;
   }
 
-  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-  internal static extern ushort RegisterClassEx(ref WNDCLASSEX lpwcx);
+  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  internal static partial ushort RegisterClassEx(ref WNDCLASSEX lpwcx);
 
-  [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-  internal static extern IntPtr CreateWindowEx(
+  [LibraryImport("user32.dll", StringMarshalling = StringMarshalling.Utf16, SetLastError = true)]
+  internal static partial IntPtr CreateWindowEx(
       uint dwExStyle,
       string lpClassName,
       string lpWindowName,
@@ -220,21 +248,24 @@ internal static class Win32
       IntPtr hInstance,
       IntPtr lpParam);
 
-  [DllImport("user32.dll", SetLastError = true)]
-  internal static extern bool DestroyWindow(IntPtr hWnd);
+  [LibraryImport("user32.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool DestroyWindow(IntPtr hWnd);
 
-  [DllImport("user32.dll", SetLastError = true)]
-  internal static extern bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
+  [LibraryImport("user32.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool SetLayeredWindowAttributes(IntPtr hwnd, uint crKey, byte bAlpha, uint dwFlags);
 
-  [DllImport("user32.dll")]
-  internal static extern IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
+  [LibraryImport("user32.dll")]
+  internal static partial IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
-  [DllImport("user32.dll", SetLastError = true)]
-  internal static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+  [LibraryImport("user32.dll", SetLastError = true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  internal static partial bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
-  [DllImport("kernel32.dll")]
-  internal static extern IntPtr GetModuleHandle(string? lpModuleName);
+  [LibraryImport("kernel32.dll", StringMarshalling = StringMarshalling.Utf16)]
+  internal static partial IntPtr GetModuleHandle(string? lpModuleName);
 
-  [DllImport("gdi32.dll")]
-  internal static extern IntPtr CreateSolidBrush(uint crColor);
+  [LibraryImport("gdi32.dll")]
+  internal static partial IntPtr CreateSolidBrush(uint crColor);
 }
