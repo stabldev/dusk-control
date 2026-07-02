@@ -1,6 +1,7 @@
 using Microsoft.UI.Xaml;
 
 namespace DuskControl;
+
 public partial class App : Application
 {
   private Window? _window;

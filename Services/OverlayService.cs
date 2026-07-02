@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using DuskControl.Helpers;
 
@@ -25,9 +23,9 @@ public class OverlayService
     var wndClass = new Win32.WNDCLASSEX
     {
       cbSize = (uint)Marshal.SizeOf<Win32.WNDCLASSEX>(),
-      lpfnWndProc = _wndProc,
+      lpfnWndProc = Marshal.GetFunctionPointerForDelegate(_wndProc),
       hInstance = Win32.GetModuleHandle(null),
-      lpszClassName = _className,
+      lpszClassName = Marshal.StringToHGlobalUni(_className),
       hbrBackground = Win32.CreateSolidBrush(0x000000) // Black
     };
 

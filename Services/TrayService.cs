@@ -35,9 +35,9 @@ public partial class TrayService : IDisposable
       uID = 1,
       uFlags = (int)(Win32.NIF_MESSAGE | Win32.NIF_ICON | Win32.NIF_TIP),
       uCallbackMessage = (int)Win32.WM_TRAYICON,
-      hIcon = _hIcon,
-      szTip = "Dusk Control"
+      hIcon = _hIcon
     };
+    unsafe { Win32.SetFixedString(nid.szTip, 128, "Dusk Control"); }
 
     Win32.Shell_NotifyIcon(Win32.NIM_ADD, ref nid);
   }

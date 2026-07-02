@@ -1,21 +1,14 @@
-using System;
-using System.Collections.Generic;
 using System.Management;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
-using Windows.Devices.Enumeration;
 using Windows.Devices.Display;
-using Microsoft.UI.Windowing;
 using DuskControl.Models;
 using DuskControl.Helpers;
 
 namespace DuskControl.Services;
 
-#pragma warning disable CA1822 // Mark members as static
-
 public class MonitorService
 {
-  public List<MonitorInfo> GetAvailableMonitors()
+  public static List<MonitorInfo> GetAvailableMonitors()
   {
     var monitors = new List<MonitorInfo>();
     int index = 1;
@@ -45,7 +38,7 @@ public class MonitorService
     return monitors;
   }
 
-  public uint? GetBrightness(IntPtr hMonitor)
+  public static uint? GetBrightness(IntPtr hMonitor)
   {
     uint count = 0;
     if (Win32.GetNumberOfPhysicalMonitorsFromHMONITOR(hMonitor, ref count) && count > 0)
@@ -160,7 +153,7 @@ public class MonitorService
     }
   }
 
-  public uint? GetContrast(IntPtr hMonitor)
+  public static uint? GetContrast(IntPtr hMonitor)
   {
     uint count = 0;
     if (Win32.GetNumberOfPhysicalMonitorsFromHMONITOR(hMonitor, ref count) && count > 0)
@@ -237,14 +230,14 @@ public class MonitorService
     dd.cb = Marshal.SizeOf(dd);
 
     // Pass 1 (EDD_GET_DEVICE_INTERFACE_NAME) to get the device interface path in DeviceID
-    if (!Win32.EnumDisplayDevices(mi.szDevice, 0, ref dd, 1))
-      return mi.szDevice;
+    if (!Win32.EnumDisplayDevices(mi.DeviceName, 0, ref dd, 1))
+      return mi.DeviceName;
 
-    if (!string.IsNullOrEmpty(dd.DeviceID))
+    if (!string.IsNullOrEmpty(dd.DeviceIDStr))
     {
       try
       {
-        var task = DisplayMonitor.FromInterfaceIdAsync(dd.DeviceID).AsTask();
+        var task = DisplayMonitor.FromInterfaceIdAsync(dd.DeviceIDStr).AsTask();
         task.Wait(200); // 200ms timeout to prevent UI hang
 
         if (task.IsCompleted && task.Result != null && !string.IsNullOrEmpty(task.Result.DisplayName))
@@ -258,9 +251,9 @@ public class MonitorService
       }
     }
 
-    if (!string.IsNullOrEmpty(dd.DeviceString))
-      return dd.DeviceString;
+    if (!string.IsNullOrEmpty(dd.DeviceStringStr))
+      return dd.DeviceStringStr;
 
-    return mi.szDevice;
+    return mi.DeviceName;
   }
 }

@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using DuskControl.Models;
@@ -19,7 +17,7 @@ public sealed partial class MainPage : Page
     _monitorService = new MonitorService();
     _overlayService = new OverlayService();
 
-    var monitors = _monitorService.GetAvailableMonitors();
+    var monitors = MonitorService.GetAvailableMonitors();
     MonitorComboBox.ItemsSource = monitors;
 
     var primaryMonitor = monitors?.FirstOrDefault(m => m.IsPrimary);
@@ -34,13 +32,13 @@ public sealed partial class MainPage : Page
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
     {
       _isUpdatingUI = true;
-      var brightness = _monitorService.GetBrightness(selectedMonitor.HMonitor);
+      var brightness = MonitorService.GetBrightness(selectedMonitor.HMonitor);
       if (brightness.HasValue && BrightnessSlider != null)
       {
         BrightnessSlider.Value = brightness.Value;
       }
 
-      var contrast = _monitorService.GetContrast(selectedMonitor.HMonitor);
+      var contrast = MonitorService.GetContrast(selectedMonitor.HMonitor);
       if (contrast.HasValue && ContrastSlider != null)
       {
         ContrastSlider.Value = contrast.Value;
