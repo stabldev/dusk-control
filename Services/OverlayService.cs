@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using dusk.Helpers;
+using DuskControl.Helpers;
 
-namespace dusk.Services;
+namespace DuskControl.Services;
 
 public class OverlayService
 {

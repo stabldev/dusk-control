@@ -1,8 +1,8 @@
 using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml;
-using dusk.Helpers;
+using DuskControl.Helpers;
 
-namespace dusk.Services;
+namespace DuskControl.Services;
 
 public class TrayService : IDisposable
 {

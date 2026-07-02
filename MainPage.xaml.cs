@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using dusk.Models;
-using dusk.Services;
+using DuskControl.Models;
+using DuskControl.Services;
 
-namespace dusk;
+namespace DuskControl;
 
 public sealed partial class MainPage : Page
 {

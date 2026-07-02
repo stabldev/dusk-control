@@ -1,6 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml;
 
-namespace dusk;
+namespace DuskControl;
 public partial class App : Application
 {
   private Window? _window;
