@@ -2,6 +2,9 @@
 
 @theme {
   --font-sans: "Segoe UI";
+  --color-primary: #5b5ff8;
+  --color-primary-border: #307cf8;
+  --color-secondary: #202020;
 }
 
 @layer base {
