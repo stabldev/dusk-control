@@ -3,3 +3,9 @@
 @theme {
   --font-sans: "Segoe UI";
 }
+
+@layer base {
+  a {
+    @apply underline;
+  }
+}

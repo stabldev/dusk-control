@@ -1,14 +1,88 @@
 ---
-import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import features from "../data/features.json";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>Dusk Control: Hybrid Brightness Control for Windows</title>
-  </head>
-  <body> Dusk Control </body>
-</html>
+<Layout>
+  <section
+    class="min-h-dvh bg-[url(/hero-bg.webp)] bg-no-repeat bg-cover relative flex flex-col"
+  >
+    <div class="absolute bg-black/50 inset-0"></div>
+    <header class="p-4 flex items-center justify-between relative">
+      <div class="flex items-center gap-3">
+        <img src="/favicon.ico" class="size-8" />
+        <span class="font-bold text-white leading-none"
+          >DUSK<br /><span class="opacity-50">CONTROL</span></span
+        >
+      </div>
+      <a
+        href="https://github.com/stabldev/dusk-control"
+        target="_blank"
+        class="text-white flex items-center gap-3"
+        >GitHub
+        <Icon name="github" class="size-6" />
+      </a>
+    </header>
+    <div class="max-w-[1000px] m-auto flex gap-30 relative">
+      <div class="flex flex-col gap-5">
+        <h1 class="text-5xl font-black">Beyond Brightness.</h1>
+        <h2 class="text-xl font-semibold opacity-65">
+          Control your monitor's hardware brightness and dim your screen below
+          its minimum.
+        </h2>
+        <p class="opacity-65">
+          Dusk Control combines DDC/CI brightness control with intelligent
+          software dimming to give you a seamless brightness experience for
+          every display. Lightweight, native, and designed for Windows.
+        </p>
+        <div class="flex flex-col gap-2 mt-2">
+          <a
+            href="https://github.com/stabldev/dusk-control"
+            target="_blank"
+            class="flex items-center gap-2 bg-[#5B5FF8] border border-[#307CF8] w-max p-2 px-4 rounded-lg no-underline"
+          >
+            <Icon name="windows" class="size-5" />
+            Download Dusk Control (v1.0.1)
+          </a>
+          <a
+            href="https://get.microsoft.com/installer/download?referrer=appbadge"
+            target="_self"
+            class="w-max"
+          >
+            <img
+              src="https://get.microsoft.com/images/en-us%20dark.svg"
+              width="200"
+            />
+          </a>
+        </div>
+      </div>
+      <img
+        src="/screenshot.webp"
+        class="rounded-xl border-2 border-[#4F8CFF] h-max"
+      />
+    </div>
+  </section>
+  <section
+    class="max-w-[1000px] mx-auto min-h-dvh flex flex-col items-center gap-5 mt-20"
+  >
+    <h2 class="font-bold text-4xl">Features</h2>
+    <p class="text-lg opacity-65 max-w-xl text-center font-semibold">
+      Dusk Control offers a variety of options and features to match your
+      preferences. All of which are 100% free.
+    </p>
+    <div class="grid grid-cols-3 w-full mt-10 rounded-xl overflow-hidden gap-1">
+      {
+        features.map((f) => (
+          <div class="flex flex-col gap-2 bg-white/5 hover:bg-white/10 p-4 transition-colors">
+            <span class="size-10 bg-[#5B5FF8] rounded-lg grid place-items-center">
+              <Icon name={f.icon} class="size-6" />
+            </span>
+            <h4 class="font-bold text-lg mt-1">{f.title}</h4>
+            <p class="opacity-65 text-sm">{f.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

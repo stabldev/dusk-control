@@ -1,0 +1,32 @@
+[
+  {
+    "icon": "brightness",
+    "title": "Hybrid Brightness",
+    "description": "Combines hardware brightness with software dimming for a seamless experience."
+  },
+  {
+    "icon": "darker",
+    "title": "Go Darker",
+    "description": "Reduce brightness below your monitor's minimum using intelligent overlay dimming."
+  },
+  {
+    "icon": "control",
+    "title": "Unified Control",
+    "description": "One slider controls everything, from -100% to +100%, with control buttons."
+  },
+  {
+    "icon": "monitor",
+    "title": "Per-Monitor Control",
+    "description": "Adjust the brightness of each connected display independently."
+  },
+  {
+    "icon": "bolt",
+    "title": "Native Performance",
+    "description": "Built with native Windows technologies for a fast, lightweight, and responsive experience."
+  },
+  {
+    "icon": "rocket",
+    "title": "Always Ready",
+    "description": "Lives quietly in your system tray, launches with Windows, and is always just one click away."
+  }
+]
