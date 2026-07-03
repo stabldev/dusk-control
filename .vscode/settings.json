@@ -1,0 +1,67 @@
+{
+  // General Formatting
+  "editor.formatOnSave": true,
+
+  // -----------------------------------------------------------
+  // Docs / Web (Astro & Prettier)
+  // -----------------------------------------------------------
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
+  // -----------------------------------------------------------
+  // Dusk Control (C# & XAML)
+  // -----------------------------------------------------------
+  // The installed formatters will automatically pick these up
+  "[csharp]": {
+    "editor.formatOnSave": true
+  },
+  "[xaml]": {
+    "editor.formatOnSave": true
+  },
+  "[xml]": {
+    "editor.formatOnSave": true
+  },
+
+  // -----------------------------------------------------------
+  // Workspace Cleanup
+  // Hide build/cache folders from explorer and search results
+  // -----------------------------------------------------------
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/.vs": true,
+    "**/Docs/node_modules": true,
+    "**/Docs/.astro": true,
+    "**/Docs/dist": true
+  },
+  "search.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/.vs": true,
+    "**/Docs/node_modules": true,
+    "**/Docs/.astro": true,
+    "**/Docs/dist": true
+  }
+}
