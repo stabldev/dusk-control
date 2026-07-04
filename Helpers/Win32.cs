@@ -116,6 +116,9 @@ internal static partial class Win32
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool RemoveWindowSubclass(IntPtr hWnd, SUBCLASSPROC pfnSubclass, uint uIdSubclass);
 
+  [LibraryImport("user32.dll")]
+  internal static partial uint GetDpiForWindow(IntPtr hwnd);
+
   // Monitor APIs
   public const int MONITORINFOF_PRIMARY = 1;
 

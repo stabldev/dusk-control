@@ -25,7 +25,16 @@ public sealed partial class MainWindow : Window
     SetTitleBar(AppTitleBar);
 
     AppWindow.SetIcon("Assets/AppIcon.ico");
-    AppWindow.Resize(new Windows.Graphics.SizeInt32(350, 300));
+
+    IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+    uint dpi = Helpers.Win32.GetDpiForWindow(hwnd);
+    if (dpi == 0) dpi = 96;
+    double scaleFactor = dpi / 96.0;
+
+    int width = (int)(350 * scaleFactor);
+    int height = (int)(320 * scaleFactor);
+
+    AppWindow.Resize(new Windows.Graphics.SizeInt32(width, height));
 
     if (AppWindow.Presenter is OverlappedPresenter overlappedPresenter)
     {
@@ -64,7 +73,12 @@ public sealed partial class MainWindow : Window
     if (displayArea != null)
     {
       var workArea = displayArea.WorkArea;
-      int padding = 6;
+      IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+      uint dpi = Helpers.Win32.GetDpiForWindow(hwnd);
+      if (dpi == 0) dpi = 96;
+      double scaleFactor = dpi / 96.0;
+
+      int padding = (int)(6 * scaleFactor);
       int x = workArea.X + workArea.Width - AppWindow.Size.Width - padding;
       int y = workArea.Y + workArea.Height - AppWindow.Size.Height - padding;
       AppWindow.Move(new Windows.Graphics.PointInt32(x, y));
