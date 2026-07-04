@@ -25,7 +25,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
-Name: "startup"; Description: "Launch on Windows Startup"; GroupDescription: "Additional tasks:"
+Name: "startup"; Description: "Launch on Windows Startup"; GroupDescription: "Additional tasks:"; Flags: unchecked
 
 [Files]
 Source: "publish_output\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
