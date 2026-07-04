@@ -3,7 +3,8 @@ import Layout from "../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import features from "../data/features.json";
 
-const base = import.meta.env.BASE_URL;
+const baseUrl = import.meta.env.BASE_URL;
+const base = baseUrl.endsWith('/') ? baseUrl : baseUrl + '/';
 ---
 
 <Layout>
