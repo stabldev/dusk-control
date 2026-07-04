@@ -4,7 +4,7 @@ on:
   push:
     branches: ["main"]
     paths:
-      - "Docs/**"
+      - "LandingPage/**"
       - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BUILD_PATH: "./Docs"
+  BUILD_PATH: "./LandingPage"
 
 jobs:
   build:
