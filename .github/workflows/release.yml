@@ -66,4 +66,3 @@ jobs:
           files: |
             DuskControl.v${{ env.VERSION }}.msix
             Output/DuskControl.v${{ env.VERSION }}.exe
-          generate_release_notes: true
