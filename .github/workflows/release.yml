@@ -24,14 +24,16 @@ jobs:
 
       - name: Extract version from tag
         id: get_version
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          $version = "${{ github.ref_name }}".TrimStart('v')
+          $version = $env:REF_NAME.TrimStart('v')
           echo "VERSION=$version" >> $env:GITHUB_ENV
 
       - name: Update AppxManifest Version
         run: |
           $manifest = [xml](Get-Content "Package.appxmanifest")
-          $manifest.Package.Identity.Version = "${{ env.VERSION }}.0"
+          $manifest.Package.Identity.Version = "$env:VERSION.0"
           $manifest.Save("Package.appxmanifest")
 
       - name: Build MSIX
@@ -41,7 +43,7 @@ jobs:
         run: |
           $msix = Get-ChildItem -Path bin/Release -Filter *.msix -Recurse | Select-Object -First 1
           if ($msix) {
-            Copy-Item $msix.FullName "DuskControl.v${{ env.VERSION }}.msix"
+            Copy-Item $msix.FullName "DuskControl.v$env:VERSION.msix"
           } else {
             Write-Error "MSIX package not found."
             exit 1
@@ -52,7 +54,7 @@ jobs:
 
       - name: Compile Inno Setup
         run: |
-          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss "/dAppVersion=${{ env.VERSION }}"
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss "/dAppVersion=$env:VERSION"
 
       - name: Release
         uses: softprops/action-gh-release@v3
