@@ -135,7 +135,11 @@ const shortHash = commitHash.slice(0, 7);
           <a class="opacity-65 text-sm md:text-base"
             >Get from the Microsoft Store</a
           >
-          <a class="opacity-65 text-sm md:text-base">View all versions</a>
+          <a
+            href="https://github.com/stabldev/dusk-control/releases"
+            target="_blank"
+            class="opacity-65 text-sm md:text-base">View all versions</a
+          >
         </div>
       </div>
       <div
@@ -150,11 +154,22 @@ const shortHash = commitHash.slice(0, 7);
           class="flex flex-col gap-1 items-center py-4 md:py-10 text-center px-4"
         >
           <span class="text-lg md:text-xl font-bold">GitHub</span>
-          <a class="opacity-65 mt-1 text-sm md:text-base">Source code</a>
-          <a class="opacity-65 text-sm md:text-base"
+          <a
+            href="https://github.com/stabldev/dusk-control"
+            target="_blank"
+            class="opacity-65 mt-1 text-sm md:text-base">Source code</a
+          >
+          <a
+            href="https://github.com/stabldev/dusk-control/issues"
+            target="_blank"
+            class="opacity-65 text-sm md:text-base"
             >Opened issues & Pull requests</a
           >
-          <a class="opacity-65 text-sm md:text-base">Contributing.md</a>
+          <a
+            href="https://github.com/stabldev/dusk-control/blob/main/CONTRIBUTING.md"
+            target="_blank"
+            class="opacity-65 text-sm md:text-base">Contributing.md</a
+          >
         </div>
       </div>
     </div>
@@ -163,11 +178,17 @@ const shortHash = commitHash.slice(0, 7);
     class="flex flex-col md:flex-row items-center justify-between max-w-[1000px] mx-auto py-5 px-4 lg:px-0 gap-3 md:gap-0"
   >
     <span class="opacity-65 text-sm text-center md:text-left">
-      Dusk Control © 2026 <a>Stabldev</a> · Photo by <a>Yogesh Pedamkar</a
+      Dusk Control © 2026 <a href="https://github.com/stabldev" target="_blank"
+        >Stabldev</a
+      > · Photo by <a href="https://unsplash.com/@yogesh_7" target="_blank"
+        >Yogesh Pedamkar</a
       ></span
     >
     <span class="opacity-65 text-sm text-center md:text-right"
-      >gh-pages c-<a>{shortHash}</a></span
+      >gh-pages c-<a
+        href={`https://github.com/stabldev/dusk-control/commit/${commitHash}`}
+        target="_blank">{shortHash}</a
+      ></span
     >
   </footer>
 </Layout>
