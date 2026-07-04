@@ -3,6 +3,9 @@ name: Deploy Docs to Pages
 on:
   push:
     branches: ["main"]
+    paths:
+      - "Docs/**"
+      - ".github/workflows/deploy-pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -44,6 +47,8 @@ jobs:
 
       - name: Build with Astro
         run: npm run build
+        env:
+          PUBLIC_COMMIT_HASH: ${{ github.sha }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
