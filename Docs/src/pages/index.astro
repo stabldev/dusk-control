@@ -1,0 +1,166 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import features from "../data/features.json";
+---
+
+<Layout>
+  <section
+    class="min-h-dvh bg-[url(/hero-bg.webp)] bg-no-repeat bg-cover relative flex flex-col"
+  >
+    <div class="absolute bg-black/50 inset-0"></div>
+    <header class="p-4 flex items-center justify-between relative">
+      <div class="flex items-center gap-3">
+        <img src="/favicon.ico" class="size-8" />
+        <span class="font-bold text-white leading-none"
+          >DUSK<br /><span class="opacity-50">CONTROL</span></span
+        >
+      </div>
+      <a
+        href="https://github.com/stabldev/dusk-control"
+        target="_blank"
+        class="text-white flex items-center gap-3 opacity-65 hover:opacity-100 transition-opacity"
+        >GitHub
+        <Icon name="github" class="size-6" />
+      </a>
+    </header>
+    <div
+      class="max-w-[1000px] w-full m-auto flex flex-col md:flex-row gap-10 md:gap-10 lg:gap-30 relative px-4 lg:px-0 pt-20 pb-10 lg:py-0 items-center md:items-start"
+    >
+      <div
+        class="flex flex-col gap-5 text-center md:text-left items-center md:items-start"
+      >
+        <h1 class="text-4xl md:text-5xl font-black leading-tight">
+          Beyond<span class="hidden md:inline"> </span><br
+            class="md:hidden"
+          />Brightness.
+        </h1>
+        <h2 class="text-base md:text-xl font-semibold opacity-65">
+          Control your monitor's hardware brightness and dim your screen below
+          its minimum.
+        </h2>
+        <p class="opacity-65 text-sm md:text-base">
+          Dusk Control combines DDC/CI brightness control with intelligent
+          software dimming to give you a seamless brightness experience for
+          every display. Lightweight, native, and designed for Windows.
+        </p>
+        <div
+          class="flex flex-col gap-2 mt-2 items-center md:items-start w-full md:w-auto"
+        >
+          <a
+            href="https://github.com/stabldev/dusk-control"
+            target="_blank"
+            class="flex items-center justify-center gap-2 bg-primary border border-primary-border w-full sm:w-max p-2 px-4 rounded-lg no-underline text-sm md:text-base"
+          >
+            <Icon name="windows" class="size-5" />
+            Download Dusk Control (v1.0.1)
+          </a>
+          <a
+            href="https://get.microsoft.com/installer/download?referrer=appbadge"
+            target="_self"
+            class="w-max"
+          >
+            <img
+              src="https://get.microsoft.com/images/en-us%20dark.svg"
+              class="w-[180px] md:w-[200px]"
+            />
+          </a>
+        </div>
+      </div>
+      <img
+        src="/screenshot.webp"
+        class="rounded-xl border-2 border-b-4 border-primary-border h-max w-full max-w-[400px] md:max-w-none md:w-[45%] lg:w-auto"
+      />
+    </div>
+  </section>
+  <section
+    class="max-w-[1000px] mx-auto flex flex-col items-center gap-5 mt-20 px-4 lg:px-0"
+  >
+    <h2 class="font-bold text-2xl md:text-3xl text-center">Features</h2>
+    <p class="text-base md:text-lg opacity-65 max-w-xl text-center">
+      Dusk Control offers a variety of options and features to match your
+      preferences. All of which are 100% free.
+    </p>
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full mt-5 md:mt-10 rounded-xl overflow-hidden gap-1"
+    >
+      {
+        features.map((f) => (
+          <div class="flex flex-col gap-2 bg-secondary/50 p-4">
+            <span class="size-10 bg-primary rounded-lg grid place-items-center">
+              <Icon name={f.icon} class="size-6" />
+            </span>
+            <h4 class="font-bold text-lg mt-1">{f.title}</h4>
+            <p class="opacity-65 text-sm">{f.description}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+  <section
+    class="flex flex-col mt-20 items-center gap-5 md:bg-secondary/50 py-4 md:py-14 px-4 mx-0 md:mx-2.5 rounded-xl"
+  >
+    <h2 class="font-bold text-2xl md:text-3xl text-center">Getting started</h2>
+    <p
+      class="text-base md:text-lg opacity-65 max-w-xl text-center font-regular"
+    >
+      Dusk Control is available for download from the Microsoft Store or as an
+      installer from GitHub (recommended).
+    </p>
+    <div
+      class="mt-5 flex flex-col md:flex-row gap-4 md:gap-5 w-full items-center justify-center"
+    >
+      <div
+        class="flex flex-col items-center bg-secondary/50 rounded-xl overflow-hidden border-2 border-b-4 border-secondary-border/50 w-full md:w-80"
+      >
+        <div
+          class="w-full bg-secondary/50 py-4 md:py-10 grid place-items-center border-b border-secondary-border/50"
+        >
+          <Icon name="windows" class="text-primary size-14 md:size-20" />
+        </div>
+        <div
+          class="flex flex-col gap-1 items-center py-4 md:py-10 text-center px-4"
+        >
+          <span class="text-lg md:text-xl font-bold">Download</span>
+          <a class="opacity-65 mt-1 text-sm md:text-base"
+            >Download installer (v1.0.1)</a
+          >
+          <a class="opacity-65 text-sm md:text-base"
+            >Get from the Microsoft Store</a
+          >
+          <a class="opacity-65 text-sm md:text-base">View all versions</a>
+        </div>
+      </div>
+      <div
+        class="flex flex-col items-center bg-secondary/50 rounded-xl overflow-hidden border-2 border-b-4 border-secondary-border/50 w-full md:w-80"
+      >
+        <div
+          class="w-full bg-secondary/50 py-4 md:py-10 grid place-items-center border-b border-secondary-border/50"
+        >
+          <Icon name="github" class="text-primary size-14 md:size-20" />
+        </div>
+        <div
+          class="flex flex-col gap-1 items-center py-4 md:py-10 text-center px-4"
+        >
+          <span class="text-lg md:text-xl font-bold">GitHub</span>
+          <a class="opacity-65 mt-1 text-sm md:text-base">Source code</a>
+          <a class="opacity-65 text-sm md:text-base"
+            >Opened issues & Pull requests</a
+          >
+          <a class="opacity-65 text-sm md:text-base">Contributing.md</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer
+    class="flex flex-col md:flex-row items-center justify-between max-w-[1000px] mx-auto py-5 px-4 lg:px-0 gap-3 md:gap-0"
+  >
+    <span class="opacity-65 text-sm text-center md:text-left">
+      Dusk Control © 2026 <a>Stabldev</a> · Photo by <a>Yogesh Pedamkar</a
+      ></span
+    >
+    <span class="opacity-65 text-sm text-center md:text-right"
+      >gh-pages c-<a>3990b34</a></span
+    >
+  </footer>
+</Layout>
