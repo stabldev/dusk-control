@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using WmiLight;
 using Windows.Devices.Display;
 using DuskControl.Models;
 using DuskControl.Helpers;
@@ -56,12 +57,41 @@ public class MonitorService
 
   private static uint? GetWmiBrightness()
   {
-    return WmiHelper.GetBrightness();
+    try
+    {
+      using WmiConnection con = new WmiConnection(@"root\wmi");
+      foreach (var instance in con.CreateQuery("SELECT * FROM WmiMonitorBrightness"))
+      {
+        return Convert.ToUInt32(instance["CurrentBrightness"]);
+      }
+    }
+    catch
+    {
+      // WMI not supported or failed
+    }
+    return null;
   }
 
   private static void SetWmiBrightness(uint brightness)
   {
-    WmiHelper.SetBrightness(brightness);
+    try
+    {
+      using WmiConnection con = new WmiConnection(@"root\wmi");
+      foreach (var instance in con.CreateQuery("SELECT * FROM WmiMonitorBrightnessMethods"))
+      {
+        var method = instance.GetMethod("WmiSetBrightness");
+        var methodParameters = method.CreateInParameters();
+        methodParameters.SetPropertyValue("Timeout", (uint)0);
+        methodParameters.SetPropertyValue("Brightness", (byte)brightness);
+        
+        instance.ExecuteMethod(method, methodParameters, out var _);
+        break;
+      }
+    }
+    catch
+    {
+      // WMI not supported or failed
+    }
   }
 
   private readonly Dictionary<IntPtr, uint> _pendingBrightness = [];
