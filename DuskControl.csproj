@@ -71,4 +71,13 @@
   <PropertyGroup>
     <PublishAot Condition="'$(Configuration)' == 'Release'">true</PublishAot>
   </PropertyGroup>
+
+  <!-- Prevent WinUI from treating these directories as AppX payload -->
+  <PropertyGroup>
+    <DefaultItemExcludes>$(DefaultItemExcludes);LandingPage\**;AppPackages\**;publish_output\**;.github\**;.agents\**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="LandingPage\**" />
+    <None Remove="LandingPage\**" />
+  </ItemGroup>
 </Project>
