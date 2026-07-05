@@ -66,9 +66,9 @@ public class MonitorService
         return (byte)instance.CimInstanceProperties["CurrentBrightness"].Value;
       }
     }
-    catch (Exception ex)
+    catch
     {
-      LoggerService.LogWarning($"GetWmiBrightness failed: {ex}");
+      // WMI not supported or failed
     }
     return null;
   }
@@ -90,9 +90,9 @@ public class MonitorService
         break;
       }
     }
-    catch (Exception ex)
+    catch
     {
-      LoggerService.LogWarning($"SetWmiBrightness failed: {ex}");
+      // WMI not supported or failed
     }
   }
 

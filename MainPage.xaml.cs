@@ -13,22 +13,17 @@ public sealed partial class MainPage : Page
 
   public MainPage()
   {
-    LoggerService.LogInfo("MainPage constructor started");
     InitializeComponent();
-    LoggerService.LogInfo("MainPage InitializeComponent done");
     _monitorService = new MonitorService();
     _overlayService = new OverlayService();
 
-    LoggerService.LogInfo("Fetching monitors...");
     var monitors = MonitorService.GetAvailableMonitors();
     MonitorComboBox.ItemsSource = monitors;
-    LoggerService.LogInfo($"Found {monitors?.Count ?? 0} monitors");
 
     var primaryMonitor = monitors?.FirstOrDefault(m => m.IsPrimary);
     if (primaryMonitor != null)
     {
       MonitorComboBox.SelectedItem = primaryMonitor;
-      LoggerService.LogInfo("Set primary monitor as selected");
     }
   }
 
