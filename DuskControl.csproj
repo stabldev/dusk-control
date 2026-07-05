@@ -52,10 +52,10 @@
     <PropertyGroup> above to opt out.
   -->
   <ItemGroup>
+    <PackageReference Include="Microsoft.Management.Infrastructure" Version="3.0.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2270" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.2.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools.WinApp" Version="0.4.0" />
-    <PackageReference Include="System.Management" Version="10.0.9" />
   </ItemGroup>
 
   <!--
@@ -70,6 +70,8 @@
   <!-- Publish Properties -->
   <PropertyGroup>
     <PublishAot Condition="'$(Configuration)' == 'Release'">true</PublishAot>
+    <CsWinRTIncludes Condition="'$(Configuration)' == 'Release'">DuskControl</CsWinRTIncludes>
+    <CsWinRTAotOptimizerEnabled Condition="'$(Configuration)' == 'Release'">true</CsWinRTAotOptimizerEnabled>
   </PropertyGroup>
 
   <!-- Prevent WinUI from treating these directories as AppX payload -->

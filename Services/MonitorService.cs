@@ -1,5 +1,5 @@
-using System.Management;
 using System.Runtime.InteropServices;
+using Microsoft.Management.Infrastructure;
 using Windows.Devices.Display;
 using DuskControl.Models;
 using DuskControl.Helpers;
@@ -59,10 +59,11 @@ public class MonitorService
   {
     try
     {
-      using var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBrightness");
-      foreach (ManagementBaseObject queryObj in searcher.Get())
+      using var session = CimSession.Create(null);
+      var instances = session.QueryInstances(@"root\WMI", "WQL", "SELECT * FROM WmiMonitorBrightness");
+      foreach (var instance in instances)
       {
-        return (byte)queryObj["CurrentBrightness"];
+        return (byte)instance.CimInstanceProperties["CurrentBrightness"].Value;
       }
     }
     catch
@@ -76,11 +77,16 @@ public class MonitorService
   {
     try
     {
-      using var searcher = new ManagementObjectSearcher("root\\WMI", "SELECT * FROM WmiMonitorBrightnessMethods");
-      foreach (ManagementBaseObject baseObj in searcher.Get())
+      using var session = CimSession.Create(null);
+      var instances = session.QueryInstances(@"root\WMI", "WQL", "SELECT * FROM WmiMonitorBrightnessMethods");
+      foreach (var instance in instances)
       {
-        var queryObj = (ManagementObject)baseObj;
-        queryObj.InvokeMethod("WmiSetBrightness", [(uint)0, (byte)brightness]);
+        var methodParameters = new CimMethodParametersCollection
+        {
+            CimMethodParameter.Create("Timeout", (uint)0, CimFlags.None),
+            CimMethodParameter.Create("Brightness", (byte)brightness, CimFlags.None)
+        };
+        session.InvokeMethod(instance, "WmiSetBrightness", methodParameters);
         break;
       }
     }
