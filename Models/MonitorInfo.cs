@@ -2,6 +2,7 @@ using Microsoft.UI.Windowing;
 
 namespace DuskControl.Models;
 
+[WinRT.GeneratedBindableCustomProperty]
 public class MonitorInfo
 {
   public string Name { get; set; } = string.Empty;
