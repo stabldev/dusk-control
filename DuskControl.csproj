@@ -74,7 +74,7 @@
 
   <!-- Prevent WinUI from treating these directories as AppX payload -->
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);LandingPage\**;AppPackages\**;publish_output\**;.github\**;.agents\**</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);LandingPage\**;AppPackages\**;publish_output\**;.github\**;.agents\**;.vscode\**;.gitignore;AGENTS.md;build-msix.ps1;skills-lock.json;installer.iss</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="LandingPage\**" />
