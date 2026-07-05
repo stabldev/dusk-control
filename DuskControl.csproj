@@ -68,11 +68,9 @@
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
 
-  <!-- Publish Properties -->
+    <!-- Publish Properties -->
   <PropertyGroup>
-    <PublishAot Condition="'$(Configuration)' == 'Release'">true</PublishAot>
     <CsWinRTIncludes Condition="'$(Configuration)' == 'Release'">DuskControl</CsWinRTIncludes>
-    <CsWinRTAotOptimizerEnabled Condition="'$(Configuration)' == 'Release'">true</CsWinRTAotOptimizerEnabled>
   </PropertyGroup>
 
   <!-- Prevent WinUI from treating these directories as AppX payload -->
