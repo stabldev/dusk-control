@@ -1,5 +1,4 @@
 using System.Runtime.InteropServices;
-using Microsoft.Management.Infrastructure;
 using Windows.Devices.Display;
 using DuskControl.Models;
 using DuskControl.Helpers;
@@ -57,43 +56,12 @@ public class MonitorService
 
   private static uint? GetWmiBrightness()
   {
-    try
-    {
-      using var session = CimSession.Create(null);
-      var instances = session.QueryInstances(@"root\WMI", "WQL", "SELECT * FROM WmiMonitorBrightness");
-      foreach (var instance in instances)
-      {
-        return (byte)instance.CimInstanceProperties["CurrentBrightness"].Value;
-      }
-    }
-    catch
-    {
-      // WMI not supported or failed
-    }
-    return null;
+    return WmiHelper.GetBrightness();
   }
 
   private static void SetWmiBrightness(uint brightness)
   {
-    try
-    {
-      using var session = CimSession.Create(null);
-      var instances = session.QueryInstances(@"root\WMI", "WQL", "SELECT * FROM WmiMonitorBrightnessMethods");
-      foreach (var instance in instances)
-      {
-        var methodParameters = new CimMethodParametersCollection
-        {
-            CimMethodParameter.Create("Timeout", (uint)0, CimFlags.None),
-            CimMethodParameter.Create("Brightness", (byte)brightness, CimFlags.None)
-        };
-        session.InvokeMethod(instance, "WmiSetBrightness", methodParameters);
-        break;
-      }
-    }
-    catch
-    {
-      // WMI not supported or failed
-    }
+    WmiHelper.SetBrightness(brightness);
   }
 
   private readonly Dictionary<IntPtr, uint> _pendingBrightness = [];

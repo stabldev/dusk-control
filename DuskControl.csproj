@@ -53,7 +53,6 @@
     <PropertyGroup> above to opt out.
   -->
   <ItemGroup>
-    <PackageReference Include="Microsoft.Management.Infrastructure" Version="3.0.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.28000.2270" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.2.0" />
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools.WinApp" Version="0.4.0" />
@@ -74,11 +73,6 @@
     <CsWinRTIncludes Condition="'$(Configuration)' == 'Release'">DuskControl</CsWinRTIncludes>
     <CsWinRTAotOptimizerEnabled Condition="'$(Configuration)' == 'Release'">true</CsWinRTAotOptimizerEnabled>
   </PropertyGroup>
-
-  <!-- Trimmer Exceptions for Native AOT -->
-  <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <TrimmerRootAssembly Include="Microsoft.Management.Infrastructure" />
-  </ItemGroup>
 
   <!-- Prevent WinUI from treating these directories as AppX payload -->
   <PropertyGroup>
