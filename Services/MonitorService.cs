@@ -59,7 +59,7 @@ public class MonitorService
   {
     try
     {
-      using WmiConnection con = new WmiConnection(@"root\wmi");
+      using WmiConnection con = new(@"root\wmi");
       foreach (var instance in con.CreateQuery("SELECT * FROM WmiMonitorBrightness"))
       {
         return Convert.ToUInt32(instance["CurrentBrightness"]);
@@ -76,14 +76,16 @@ public class MonitorService
   {
     try
     {
-      using WmiConnection con = new WmiConnection(@"root\wmi");
+      using WmiConnection con = new(@"root\wmi");
       foreach (var instance in con.CreateQuery("SELECT * FROM WmiMonitorBrightnessMethods"))
       {
         var method = instance.GetMethod("WmiSetBrightness");
         var methodParameters = method.CreateInParameters();
-        methodParameters.SetPropertyValue("Timeout", (uint)0);
+
+        // WmiLight often requires uint32 WMI properties to be passed as int due to COM variant mapping
+        methodParameters.SetPropertyValue("Timeout", 0);
         methodParameters.SetPropertyValue("Brightness", (byte)brightness);
-        
+
         instance.ExecuteMethod(method, methodParameters, out var _);
         break;
       }
