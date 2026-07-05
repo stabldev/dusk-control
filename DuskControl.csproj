@@ -68,10 +68,17 @@
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
 
-    <!-- Publish Properties -->
+  <!-- Publish Properties -->
   <PropertyGroup>
+    <PublishAot Condition="'$(Configuration)' == 'Release'">true</PublishAot>
     <CsWinRTIncludes Condition="'$(Configuration)' == 'Release'">DuskControl</CsWinRTIncludes>
+    <CsWinRTAotOptimizerEnabled Condition="'$(Configuration)' == 'Release'">true</CsWinRTAotOptimizerEnabled>
   </PropertyGroup>
+
+  <!-- Trimmer Exceptions for Native AOT -->
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <TrimmerRootAssembly Include="Microsoft.Management.Infrastructure" />
+  </ItemGroup>
 
   <!-- Prevent WinUI from treating these directories as AppX payload -->
   <PropertyGroup>
