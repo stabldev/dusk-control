@@ -17,8 +17,13 @@
     <ComboBox
       x:Name="MonitorComboBox"
       HorizontalAlignment="Stretch"
-      DisplayMemberPath="Name"
-      SelectionChanged="MonitorComboBox_SelectionChanged" />
+      SelectionChanged="MonitorComboBox_SelectionChanged">
+      <ComboBox.ItemTemplate>
+        <DataTemplate x:DataType="models:MonitorInfo">
+          <TextBlock Text="{x:Bind Name}" />
+        </DataTemplate>
+      </ComboBox.ItemTemplate>
+    </ComboBox>
     <StackPanel Grid.Row="1" Margin="0,10,0,0">
       <!--  Brightness  -->
       <StackPanel Spacing="2.5">
