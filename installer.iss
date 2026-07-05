@@ -28,10 +28,7 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 Name: "startup"; Description: "Launch on Windows Startup"; GroupDescription: "Additional tasks:"; Flags: unchecked
 
 [Files]
-Source: "bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\*.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\*.pri"; DestDir: "{app}"; Flags: ignoreversion
-Source: "bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\Assets\*"; DestDir: "{app}\Assets"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

@@ -53,8 +53,7 @@ jobs:
             -r win-x64 `
             -p:WindowsPackageType=None `
             --self-contained true `
-            -p:PublishSingleFile=true `
-            -p:WindowsAppSDKSelfContained=false
+            -p:PublishSingleFile=true
 
       - name: Compile Inno Setup
         run: |
