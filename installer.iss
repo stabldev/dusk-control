@@ -1,6 +1,6 @@
 #define MyAppName "Dusk Control"
 #ifndef AppVersion
-#define AppVersion "1.0.0"
+#define AppVersion "1.0.3"
 #endif
 #define MyAppPublisher "Stabldev"
 #define MyAppExeName "DuskControl.exe"
