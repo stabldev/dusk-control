@@ -11,7 +11,7 @@
   <Identity
     Name="Stabldev.DuskControl"
     Publisher="CN=ACBFAA4D-E9AB-4D28-B81B-012186A12D82"
-    Version="1.0.3.0" />
+    Version="1.0.0.0" />
 
   <mp:PhoneIdentity PhoneProductId="47C064D9-8F1F-45AF-B253-F7B724EA2F3B" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
