@@ -60,9 +60,16 @@ jobs:
         run: |
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss "/dAppVersion=$env:VERSION"
 
+      - name: Create Portable Zip
+        run: |
+          $ver = "${{ env.VERSION }}"
+          Compress-Archive -Path "bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\*" -DestinationPath "DuskControl.v$ver.portable.zip"
+
+
       - name: Release
         uses: softprops/action-gh-release@v3
         with:
           files: |
             DuskControl.v${{ env.VERSION }}.msix
             Output/DuskControl.v${{ env.VERSION }}.exe
+            DuskControl.v${{ env.VERSION }}.portable.zip
