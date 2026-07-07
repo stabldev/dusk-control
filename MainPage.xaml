@@ -87,7 +87,11 @@
       </StackPanel>
 
       <!--  Contrast  -->
-      <StackPanel Margin="0,2.5,0,0" Spacing="2.5">
+      <StackPanel
+        x:Name="ContrastPanel"
+        Margin="0,2.5,0,0"
+        Spacing="2.5"
+        Visibility="Collapsed">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -151,17 +155,10 @@
     <Grid Grid.Row="2" ColumnSpacing="10">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
       <Button
-        x:Name="SettingsButton"
-        HorizontalAlignment="Stretch"
-        Content="Settings"
-        IsEnabled="False" />
-      <Button
         x:Name="ResetLevelsButton"
-        Grid.Column="1"
         HorizontalAlignment="Stretch"
         Click="ResetLevelsButton_Click"
         Content="Reset levels" />

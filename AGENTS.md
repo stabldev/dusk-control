@@ -191,3 +191,10 @@ Every feature should be:
 - Easy to understand
 
 When in doubt, choose the simpler implementation.
+
+---
+
+# Git Conventions
+
+- Use Conventional Commits (e.g. `feat:`, `fix:`, `chore:`, `refactor:`) for all commit messages.
+- Apply the same convention to PR titles (e.g., `fix: resolve store certification issues`).
