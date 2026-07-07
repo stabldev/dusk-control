@@ -39,9 +39,14 @@ public sealed partial class MainPage : Page
       }
 
       var contrast = MonitorService.GetContrast(selectedMonitor.HMonitor);
-      if (contrast.HasValue && ContrastSlider != null)
+      if (contrast.HasValue)
       {
-        ContrastSlider.Value = contrast.Value;
+        if (ContrastSlider != null) ContrastSlider.Value = contrast.Value;
+        if (ContrastPanel != null) ContrastPanel.Visibility = Visibility.Visible;
+      }
+      else
+      {
+        if (ContrastPanel != null) ContrastPanel.Visibility = Visibility.Collapsed;
       }
 
       _isUpdatingUI = false;
@@ -123,7 +128,7 @@ public sealed partial class MainPage : Page
   private void ResetLevelsButton_Click(object sender, RoutedEventArgs e)
   {
     if (BrightnessSlider != null) BrightnessSlider.Value = 0;
-    if (ContrastSlider != null) ContrastSlider.Value = 50;
+    if (ContrastSlider != null && ContrastPanel?.Visibility == Visibility.Visible) ContrastSlider.Value = 50;
 
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
     {
