@@ -262,6 +262,17 @@ internal static partial class Win32
   [LibraryImport("user32.dll", EntryPoint = "DefWindowProcW")]
   internal static partial IntPtr DefWindowProc(IntPtr hWnd, uint uMsg, IntPtr wParam, IntPtr lParam);
 
+  public const int GWL_STYLE = -16;
+  public const int GWL_EXSTYLE = -20;
+  public const uint WS_MINIMIZEBOX = 0x00020000;
+  public const uint WS_MAXIMIZEBOX = 0x00010000;
+
+  [LibraryImport("user32.dll", EntryPoint = "GetWindowLongW")]
+  internal static partial int GetWindowLong(IntPtr hWnd, int nIndex);
+
+  [LibraryImport("user32.dll", EntryPoint = "SetWindowLongW")]
+  internal static partial int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
+
   [LibraryImport("user32.dll", SetLastError = true)]
   [return: MarshalAs(UnmanagedType.Bool)]
   internal static partial bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
