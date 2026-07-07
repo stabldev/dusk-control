@@ -2,6 +2,12 @@
 import Layout from "../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 import features from "../data/features.json";
+import {
+  VERSION,
+  GITHUB_REPO_URL,
+  RELEASES_URL,
+  DOWNLOAD_INSTALLER_URL,
+} from "../config";
 
 const baseUrl = import.meta.env.BASE_URL;
 const base = baseUrl.endsWith("/") ? baseUrl : baseUrl + "/";
@@ -24,7 +30,7 @@ const shortHash = commitHash.slice(0, 7);
         >
       </div>
       <a
-        href="https://github.com/stabldev/dusk-control"
+        href={GITHUB_REPO_URL}
         target="_blank"
         class="text-white flex items-center gap-3"
         >GitHub
@@ -55,12 +61,12 @@ const shortHash = commitHash.slice(0, 7);
           class="flex flex-col gap-2 mt-2 items-center md:items-start w-full md:w-auto"
         >
           <a
-            href="https://github.com/stabldev/dusk-control"
+            href={DOWNLOAD_INSTALLER_URL}
             target="_blank"
             class="flex items-center justify-center gap-2 bg-primary border border-primary-border w-full sm:w-max p-2 px-4 rounded-lg no-underline text-sm md:text-base"
           >
             <Icon name="windows" class="size-5" />
-            Download Dusk Control (v1.0.1)
+            Download Dusk Control (v{VERSION})
           </a>
           <a
             href="https://get.microsoft.com/installer/download?referrer=appbadge"
@@ -129,14 +135,16 @@ const shortHash = commitHash.slice(0, 7);
           class="flex flex-col gap-1 items-center py-4 md:py-10 text-center px-4"
         >
           <span class="text-lg md:text-xl font-bold">Download</span>
-          <a class="opacity-65 mt-1 text-sm md:text-base"
-            >Download installer (v1.0.1)</a
+          <a
+            href={DOWNLOAD_INSTALLER_URL}
+            class="opacity-65 mt-1 text-sm md:text-base"
+            >Download installer (v{VERSION})</a
           >
           <a class="opacity-65 text-sm md:text-base"
             >Get from the Microsoft Store</a
           >
           <a
-            href="https://github.com/stabldev/dusk-control/releases"
+            href={RELEASES_URL}
             target="_blank"
             class="opacity-65 text-sm md:text-base">View all versions</a
           >
@@ -155,18 +163,18 @@ const shortHash = commitHash.slice(0, 7);
         >
           <span class="text-lg md:text-xl font-bold">GitHub</span>
           <a
-            href="https://github.com/stabldev/dusk-control"
+            href={GITHUB_REPO_URL}
             target="_blank"
             class="opacity-65 mt-1 text-sm md:text-base">Source code</a
           >
           <a
-            href="https://github.com/stabldev/dusk-control/issues"
+            href={`${GITHUB_REPO_URL}/issues`}
             target="_blank"
             class="opacity-65 text-sm md:text-base"
             >Opened issues & Pull requests</a
           >
           <a
-            href="https://github.com/stabldev/dusk-control/blob/main/CONTRIBUTING.md"
+            href={`${GITHUB_REPO_URL}/blob/main/CONTRIBUTING.md`}
             target="_blank"
             class="opacity-65 text-sm md:text-base">Contributing.md</a
           >
@@ -186,7 +194,7 @@ const shortHash = commitHash.slice(0, 7);
     >
     <span class="opacity-65 text-sm text-center md:text-right"
       >gh-pages c-<a
-        href={`https://github.com/stabldev/dusk-control/commit/${commitHash}`}
+        href={`${GITHUB_REPO_URL}/commit/${commitHash}`}
         target="_blank">{shortHash}</a
       ></span
     >
