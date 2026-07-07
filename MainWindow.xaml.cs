@@ -43,6 +43,12 @@ public sealed partial class MainWindow : Window
       overlappedPresenter.IsMinimizable = false;
     }
 
+    // Remove Minimize and Maximize buttons completely
+    int style = Helpers.Win32.GetWindowLong(hwnd, Helpers.Win32.GWL_STYLE);
+    style &= ~(int)Helpers.Win32.WS_MINIMIZEBOX;
+    style &= ~(int)Helpers.Win32.WS_MAXIMIZEBOX;
+    _ = Helpers.Win32.SetWindowLong(hwnd, Helpers.Win32.GWL_STYLE, style);
+
     // Position window at bottom right corner above the taskbar with some padding
     ResetPosition();
 
