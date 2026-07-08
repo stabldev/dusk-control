@@ -21,8 +21,7 @@ public sealed partial class MainWindow : Window
   {
     InitializeComponent();
 
-    ExtendsContentIntoTitleBar = true;
-    SetTitleBar(AppTitleBar);
+
 
     AppWindow.SetIcon("Assets/AppIcon.ico");
 
@@ -41,12 +40,14 @@ public sealed partial class MainWindow : Window
       overlappedPresenter.IsResizable = false;
       overlappedPresenter.IsMaximizable = false;
       overlappedPresenter.IsMinimizable = false;
+      overlappedPresenter.SetBorderAndTitleBar(true, false);
     }
 
-    // Remove Minimize and Maximize buttons completely
+    // Remove Minimize, Maximize, and System Menu (Close button) completely
     int style = Helpers.Win32.GetWindowLong(hwnd, Helpers.Win32.GWL_STYLE);
     style &= ~(int)Helpers.Win32.WS_MINIMIZEBOX;
     style &= ~(int)Helpers.Win32.WS_MAXIMIZEBOX;
+    style &= ~(int)0x00080000; // WS_SYSMENU
     _ = Helpers.Win32.SetWindowLong(hwnd, Helpers.Win32.GWL_STYLE, style);
 
     // Position window at bottom right corner above the taskbar with some padding
@@ -95,5 +96,10 @@ public sealed partial class MainWindow : Window
   {
     _isExiting = true;
     Close();
+  }
+
+  private void CloseButton_Click(object sender, RoutedEventArgs e)
+  {
+    AppWindow.Hide();
   }
 }
