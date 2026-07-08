@@ -55,8 +55,10 @@ public partial class TrayService : IDisposable
       var mouseMsg = (uint)lParam.ToInt32();
       if (mouseMsg == Win32.WM_LBUTTONUP)
       {
-        _window.AppWindow.Show();
-        Win32.SetForegroundWindow(_hWnd);
+        if (_window is MainWindow mainWindow)
+        {
+          mainWindow.ShowWindowAsync();
+        }
       }
       else if (mouseMsg == Win32.WM_RBUTTONUP)
       {
@@ -87,8 +89,10 @@ public partial class TrayService : IDisposable
 
     if (selectedId == 1001)
     {
-      _window.AppWindow.Show();
-      Win32.SetForegroundWindow(_hWnd);
+      if (_window is MainWindow mainWindow)
+      {
+        mainWindow.ShowWindowAsync();
+      }
     }
     else if (selectedId == 1003)
     {

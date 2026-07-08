@@ -1,6 +1,4 @@
 using Microsoft.UI.Xaml;
-using System;
-using System.Threading.Tasks;
 
 namespace DuskControl;
 
@@ -13,27 +11,30 @@ public partial class App : Application
     InitializeComponent();
 
     // UI thread exceptions
-    this.UnhandledException += (s, e) =>
+    UnhandledException += (s, e) =>
     {
-      System.IO.File.WriteAllText("crash.txt", $"UI UnhandledException: {e.Exception}\nMessage: {e.Message}");
+      File.WriteAllText("crash.txt", $"UI UnhandledException: {e.Exception}\nMessage: {e.Message}");
       e.Handled = true; // Attempt to prevent crash if possible
     };
 
     // Background thread exceptions
     AppDomain.CurrentDomain.UnhandledException += (s, e) =>
     {
-      System.IO.File.WriteAllText("crash.txt", $"AppDomain UnhandledException: {e.ExceptionObject}");
+      File.WriteAllText("crash.txt", $"AppDomain UnhandledException: {e.ExceptionObject}");
     };
 
     TaskScheduler.UnobservedTaskException += (s, e) =>
     {
-      System.IO.File.WriteAllText("crash.txt", $"UnobservedTaskException: {e.Exception}");
+      File.WriteAllText("crash.txt", $"UnobservedTaskException: {e.Exception}");
     };
   }
 
   protected override void OnLaunched(LaunchActivatedEventArgs args)
   {
     _window = new MainWindow();
-    _window.Activate();
+    if (_window is MainWindow mainWindow)
+    {
+      mainWindow.ShowWindowAsync();
+    }
   }
 }

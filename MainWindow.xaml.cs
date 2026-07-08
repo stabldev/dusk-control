@@ -55,8 +55,8 @@ public sealed partial class MainWindow : Window
     exStyle &= ~(int)Helpers.Win32.WS_EX_APPWINDOW;
     _ = Helpers.Win32.SetWindowLong(hwnd, Helpers.Win32.GWL_EXSTYLE, exStyle);
 
-    // Position window at bottom right corner above the taskbar with some padding
-    ResetPosition();
+    // Position window off-screen initially to prevent FOUC
+    AppWindow.Move(new Windows.Graphics.PointInt32(-10000, -10000));
 
     // Navigate the root frame to the main page on startup.
     RootFrame.Navigate(typeof(MainPage));
@@ -101,6 +101,25 @@ public sealed partial class MainWindow : Window
   {
     _isExiting = true;
     Close();
+  }
+
+  public async void ShowWindowAsync()
+  {
+    // Move off-screen
+    AppWindow.Move(new Windows.Graphics.PointInt32(-10000, -10000));
+
+    // Show window (triggers render)
+    Activate();
+    AppWindow.Show();
+
+    // Wait for render to prevent FOUC
+    await Task.Delay(50);
+
+    // Move to correct position
+    ResetPosition();
+
+    IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
+    Helpers.Win32.SetForegroundWindow(hwnd);
   }
 
   private void CloseButton_Click(object sender, RoutedEventArgs e)
