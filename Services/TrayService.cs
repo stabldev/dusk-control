@@ -12,10 +12,16 @@ public partial class TrayService : IDisposable
   private bool _isDisposed;
   private IntPtr _hIcon = IntPtr.Zero;
 
+  private readonly SettingsService _settingsService = new();
+  private readonly StartupService _startupService = new();
+
   public TrayService(Window window)
   {
     _window = window;
     _hWnd = WinRT.Interop.WindowNative.GetWindowHandle(_window);
+
+    // Enforce startup logic on initialization
+    StartupService.SetStartupEnabled(SettingsService.StartWithWindows);
 
     _subclassProc = new Win32.SUBCLASSPROC(WndProc);
     Win32.SetWindowSubclass(_hWnd, _subclassProc, 1, IntPtr.Zero);
@@ -66,7 +72,11 @@ public partial class TrayService : IDisposable
     IntPtr hMenu = Win32.CreatePopupMenu();
     if (hMenu == IntPtr.Zero) return;
 
-    Win32.AppendMenu(hMenu, Win32.MF_STRING, 1001, "Open Dusk Control");
+    Win32.AppendMenu(hMenu, Win32.MF_STRING, 1001, "Show Window");
+
+    uint startWithWindowsFlags = Win32.MF_STRING | (SettingsService.StartWithWindows ? Win32.MF_CHECKED : Win32.MF_UNCHECKED);
+    Win32.AppendMenu(hMenu, startWithWindowsFlags, 1003, "Start with Windows");
+
     Win32.AppendMenu(hMenu, Win32.MF_STRING, 1002, "Exit");
 
     Win32.GetCursorPos(out Win32.POINT pt);
@@ -79,6 +89,12 @@ public partial class TrayService : IDisposable
     {
       _window.AppWindow.Show();
       Win32.SetForegroundWindow(_hWnd);
+    }
+    else if (selectedId == 1003)
+    {
+      bool newState = !SettingsService.StartWithWindows;
+      SettingsService.StartWithWindows = newState;
+      StartupService.SetStartupEnabled(newState);
     }
     else if (selectedId == 1002)
     {

@@ -18,6 +18,8 @@ internal static partial class Win32
   public const uint NIF_TIP = 0x00000004;
 
   public const uint MF_STRING = 0x00000000;
+  public const uint MF_CHECKED = 0x00000008;
+  public const uint MF_UNCHECKED = 0x00000000;
   public const uint TPM_RETURNCMD = 0x0100;
   public const uint TPM_LEFTALIGN = 0x0000;
   public const uint TPM_RIGHTBUTTON = 0x0002;
