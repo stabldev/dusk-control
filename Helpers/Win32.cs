@@ -29,6 +29,7 @@ internal static partial class Win32
   public const uint WS_EX_LAYERED = 0x00080000;
   public const uint WS_EX_TRANSPARENT = 0x00000020;
   public const uint WS_EX_TOOLWINDOW = 0x00000080;
+  public const uint WS_EX_APPWINDOW = 0x00040000;
   public const uint WS_EX_TOPMOST = 0x00000008;
   public const uint WS_POPUP = 0x80000000;
   public const uint LWA_ALPHA = 0x00000002;
