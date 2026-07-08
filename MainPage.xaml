@@ -8,10 +8,7 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:models="using:DuskControl.Models"
   mc:Ignorable="d">
-  <Grid
-    Padding="14"
-    IsTabStop="True"
-    UseSystemFocusVisuals="False">
+  <Grid Padding="14" IsTabStop="True">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
