@@ -18,11 +18,45 @@
       <RowDefinition Height="*" />
     </Grid.RowDefinitions>
 
-    <TitleBar x:Name="AppTitleBar" Title="Dusk Control">
-      <TitleBar.IconSource>
-        <ImageIconSource ImageSource="Assets/AppIcon.ico" />
-      </TitleBar.IconSource>
-    </TitleBar>
+    <Grid
+      x:Name="AppTitleBar"
+      Grid.Row="0"
+      Margin="0,4,0,0"
+      Background="Transparent">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="Auto" />
+      </Grid.ColumnDefinitions>
+
+      <Image
+        Grid.Column="0"
+        Width="16"
+        Height="16"
+        Margin="14,0,8,0"
+        VerticalAlignment="Center"
+        Source="Assets/AppIcon.ico" />
+      <TextBlock
+        Grid.Column="1"
+        VerticalAlignment="Center"
+        FontSize="12"
+        Text="Dusk Control" />
+
+      <Button
+        Grid.Column="2"
+        Width="24"
+        Height="24"
+        Margin="0,0,4,0"
+        Padding="0"
+        Background="Transparent"
+        BorderThickness="0"
+        Click="CloseButton_Click">
+        <FontIcon
+          FontSize="10"
+          Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+          Glyph="&#xE8BB;" />
+      </Button>
+    </Grid>
 
     <!--
       The Frame hosts pages for your application content. Add your UI to
