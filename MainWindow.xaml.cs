@@ -21,8 +21,6 @@ public sealed partial class MainWindow : Window
   {
     InitializeComponent();
 
-
-
     AppWindow.SetIcon("Assets/AppIcon.ico");
 
     IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
@@ -49,6 +47,12 @@ public sealed partial class MainWindow : Window
     style &= ~(int)Helpers.Win32.WS_MAXIMIZEBOX;
     style &= ~(int)0x00080000; // WS_SYSMENU
     _ = Helpers.Win32.SetWindowLong(hwnd, Helpers.Win32.GWL_STYLE, style);
+
+    // Make it a tool window so it doesn't show in Alt-Tab or Taskbar
+    int exStyle = Helpers.Win32.GetWindowLong(hwnd, Helpers.Win32.GWL_EXSTYLE);
+    exStyle |= (int)Helpers.Win32.WS_EX_TOOLWINDOW;
+    exStyle &= ~(int)Helpers.Win32.WS_EX_APPWINDOW;
+    _ = Helpers.Win32.SetWindowLong(hwnd, Helpers.Win32.GWL_EXSTYLE, exStyle);
 
     // Position window at bottom right corner above the taskbar with some padding
     ResetPosition();
