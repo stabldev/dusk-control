@@ -10,20 +10,27 @@ public class StartupService
 
   public static void SetStartupEnabled(bool enable)
   {
-    using var key = Registry.CurrentUser.OpenSubKey(RegistryKeyPath, true);
-    if (key == null) return;
-
-    if (enable)
+    try
     {
-      var exePath = Process.GetCurrentProcess().MainModule?.FileName;
-      if (!string.IsNullOrEmpty(exePath))
+      using var key = Registry.CurrentUser.CreateSubKey(RegistryKeyPath);
+      if (key == null) return;
+
+      if (enable)
       {
-        key.SetValue(AppName, $"\"{exePath}\"");
+        var exePath = Process.GetCurrentProcess().MainModule?.FileName;
+        if (!string.IsNullOrEmpty(exePath))
+        {
+          key.SetValue(AppName, $"\"{exePath}\"");
+        }
+      }
+      else
+      {
+        key.DeleteValue(AppName, false);
       }
     }
-    else
+    catch (Exception ex)
     {
-      key.DeleteValue(AppName, false);
+      Debug.WriteLine($"Failed to set startup enabled: {ex.Message}");
     }
   }
 }
