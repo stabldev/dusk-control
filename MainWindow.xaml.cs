@@ -22,6 +22,7 @@ public sealed partial class MainWindow : Window
     InitializeComponent();
     ExtendsContentIntoTitleBar = true;
 
+    AppWindow.TitleBar.PreferredHeightOption = TitleBarHeightOption.Collapsed;
     AppWindow.SetIcon("Assets/AppIcon.ico");
 
     IntPtr hwnd = WinRT.Interop.WindowNative.GetWindowHandle(this);
