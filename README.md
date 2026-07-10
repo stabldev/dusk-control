@@ -5,7 +5,7 @@
 <h1 align="center">Dusk Control</h1>
 
 <p align="center">
-  A lightweight Windows brightness utility with hardware &amp; software dimming.
+A Windows system tray utility for advanced brightness control, <br/> featuring DDC/CI support and sub-zero software dimming.
 </p>
 
 <p align="center">
@@ -21,8 +21,6 @@
     <img src="https://get.microsoft.com/images/en-us%20dark.svg" alt="Get it from Microsoft Store" width="160" />
   </a>
 </p>
-
----
 
 ## Features
 
@@ -65,58 +63,22 @@ Dusk Control combines two brightness approaches behind a single slider:
 
 ## Building from Source
 
-```powershell
-# Clone
-git clone https://github.com/stabldev/dusk-control.git
-cd dusk-control
-
-# Build
-dotnet build
-
-# Run
-dotnet run
-```
-
 ### Prerequisites
 
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 - [Windows App SDK](https://learn.microsoft.com/windows/apps/windows-app-sdk/)
 - Visual Studio 2022+ with the **Windows application development** workload (optional)
 
-## Tech Stack
-
-| Component | Technology |
-|-----------|-----------|
-| Framework | WinUI 3 / Windows App SDK |
-| Language | C# |
-| Runtime | .NET 10 |
-| Compilation | Native AOT (Release) |
-| Installer | Inno Setup |
-| CI/CD | GitHub Actions |
-
-## Project Structure
-
+```powershell
+# Clone
+git clone https://github.com/stabldev/dusk-control.git
+cd dusk-control
+# Build
+dotnet build
+# Run
+dotnet run
 ```
-├── Assets/          # App icons and logos
-├── Helpers/         # Win32 interop and utilities
-├── Models/          # Data models
-├── Services/        # Business logic (Monitor, Overlay, Tray, Settings, Startup)
-├── LandingPage/     # Project website (Astro)
-├── App.xaml         # Application entry point
-├── MainWindow.xaml  # Window shell with tray integration
-└── MainPage.xaml    # Brightness and contrast UI
-```
-
-## Contributing
-
-Contributions are welcome! Please open an issue first to discuss what you'd like to change.
 
 ## License
 
 This project is source-available. See the repository for details.
-
----
-
-<p align="center">
-  Made by <a href="https://github.com/stabldev">Stabldev</a>
-</p>
