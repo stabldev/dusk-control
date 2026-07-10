@@ -58,9 +58,9 @@ A Windows system tray utility for advanced brightness control, <br/> featuring D
 Dusk Control combines two brightness approaches behind a single slider:
 
 ```
--100 ◄━━━━━━━━━━ 0 ━━━━━━━━━━► +100
-   Software dim    ↑    Hardware brightness
-  (overlay)     Normal       (DDC/CI)
+-100 ◄━━━━━━━━━━━━━━━━━ 0 ━━━━━━━━━━━━━━━━━► +100
+Software dim            ↑     Hardware brightness
+(overlay)             Normal             (DDC/CI)
 ```
 
 - **Above 0** → Sets hardware brightness via DDC/CI
