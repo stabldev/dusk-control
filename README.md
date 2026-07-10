@@ -24,23 +24,29 @@ A Windows system tray utility for advanced brightness control, <br/> featuring D
 
 ## Features
 
-- **Unified brightness slider** — single slider from −100 to +100
-- **Hardware brightness (DDC/CI)** — controls external monitors natively
-- **Software dimming** — transparent overlay for values below zero
-- **Contrast control** — per-monitor contrast adjustment via DDC/CI
-- **Multi-monitor support** — switch between connected displays
-- **System tray** — runs quietly in the background
-- **Launch at startup** — optional auto-start with Windows
-- **Fluent Design** — native Windows 11 look with light & dark mode
-- **Native AOT** — fast startup, low memory footprint
+- Single unified slider ranging from −100 to +100
+- Controls external monitor brightness natively via DDC/CI
+- Sub-zero software dimming using a transparent overlay
+- Per-monitor contrast adjustment
+- Multi-monitor support with quick switching
+- Runs quietly in the system tray
+- Optional launch at Windows startup
+- Native Windows 11 Fluent Design with light & dark mode
+- Compiled with Native AOT for fast startup and low memory usage
 
 ## Download
 
-| Channel | Link |
-|---------|------|
-| **Microsoft Store** | [Get Dusk Control](https://apps.microsoft.com/detail/9PC2NH8VN5NT) |
-| **Installer (.exe)** | [Latest Release](https://github.com/stabldev/dusk-control/releases/latest) |
-| **Portable (.zip)** | [Latest Release](https://github.com/stabldev/dusk-control/releases/latest) |
+<p>
+  <a href="https://apps.microsoft.com/detail/9PC2NH8VN5NT">
+    <img src="https://img.shields.io/badge/Microsoft_Store-Install-0078D4?style=for-the-badge&logo=microsoft" alt="Microsoft Store" />
+  </a>&nbsp;
+  <a href="https://github.com/stabldev/dusk-control/releases/latest">
+    <img src="https://img.shields.io/badge/Installer-.exe-green?style=for-the-badge&logo=windows" alt="Installer" />
+  </a>&nbsp;
+  <a href="https://github.com/stabldev/dusk-control/releases/latest">
+    <img src="https://img.shields.io/badge/Portable-.zip-orange?style=for-the-badge&logo=files" alt="Portable" />
+  </a>
+</p>
 
 ## Requirements
 
