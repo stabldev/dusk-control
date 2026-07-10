@@ -7,6 +7,7 @@ import {
   GITHUB_REPO_URL,
   RELEASES_URL,
   DOWNLOAD_INSTALLER_URL,
+  MICROSOFT_STORE_URL,
 } from "../config";
 
 const baseUrl = import.meta.env.BASE_URL;
@@ -62,15 +63,16 @@ const shortHash = commitHash.slice(0, 7);
         >
           <a
             href={DOWNLOAD_INSTALLER_URL}
-            target="_blank"
+            target="_self"
             class="flex items-center justify-center gap-2 bg-primary border border-primary-border w-full sm:w-max p-2 px-4 rounded-lg no-underline text-sm md:text-base"
           >
             <Icon name="windows" class="size-5" />
             Download Dusk Control (v{VERSION})
           </a>
           <a
-            href="https://get.microsoft.com/installer/download?referrer=appbadge"
-            target="_self"
+            href={MICROSOFT_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             class="w-max"
           >
             <img
@@ -137,10 +139,15 @@ const shortHash = commitHash.slice(0, 7);
           <span class="text-lg md:text-xl font-bold">Download</span>
           <a
             href={DOWNLOAD_INSTALLER_URL}
+            target="_self"
             class="opacity-65 mt-1 text-sm md:text-base"
             >Download installer (v{VERSION})</a
           >
-          <a class="opacity-65 text-sm md:text-base"
+          <a
+            href={MICROSOFT_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="opacity-65 text-sm md:text-base"
             >Get from the Microsoft Store</a
           >
           <a
