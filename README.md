@@ -81,4 +81,11 @@ dotnet run
 
 ## License
 
-This project is source-available. See the repository for details.
+[MIT](LICENSE) © 2026 ^\_^ [`@stabldev`](https://github.com/stabldev)
+
+## Like my work?
+
+This project needs a ⭐ from you.\
+If you found this helpful, consider supporting me with a coffee.
+
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/stabldev)
