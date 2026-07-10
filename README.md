@@ -36,17 +36,11 @@ A Windows system tray utility for advanced brightness control, <br/> featuring D
 
 ## Download
 
-<p>
-  <a href="https://apps.microsoft.com/detail/9PC2NH8VN5NT">
-    <img src="https://img.shields.io/badge/Microsoft_Store-Install-0078D4?style=for-the-badge&logo=microsoft" alt="Microsoft Store" />
-  </a>&nbsp;
-  <a href="https://github.com/stabldev/dusk-control/releases/latest">
-    <img src="https://img.shields.io/badge/Installer-.exe-green?style=for-the-badge&logo=windows" alt="Installer" />
-  </a>&nbsp;
-  <a href="https://github.com/stabldev/dusk-control/releases/latest">
-    <img src="https://img.shields.io/badge/Portable-.zip-orange?style=for-the-badge&logo=files" alt="Portable" />
-  </a>
-</p>
+> 🏪 **Microsoft Store** — [Get Dusk Control](https://apps.microsoft.com/detail/9PC2NH8VN5NT)
+>
+> 📦 **Installer** (.exe) — [Latest Release](https://github.com/stabldev/dusk-control/releases/latest)
+>
+> 📁 **Portable** (.zip) — [Latest Release](https://github.com/stabldev/dusk-control/releases/latest)
 
 ## Requirements
 
