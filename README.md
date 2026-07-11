@@ -51,15 +51,7 @@ Download the latest version from the [Releases](https://github.com/stabldev/dusk
 
 Dusk Control combines two brightness approaches behind a single slider:
 
-```
--100 ◄━━━━━━━━━━━━━━━━━ 0 ━━━━━━━━━━━━━━━━━► +100
-Software dim            ↑     Hardware brightness
-(overlay)             Normal             (DDC/CI)
-```
-
-- **Above 0** → Sets hardware brightness via DDC/CI
-- **Below 0** → Dims the screen using a transparent overlay
-- **At 0** → Normal brightness, no overlay
+<img width="703" height="336" alt="image" src="https://github.com/user-attachments/assets/47e1f222-52dd-4122-b6c3-b3050c1c4dab" />
 
 ## Building from Source
 
