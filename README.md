@@ -51,7 +51,7 @@ Download the latest version from the [Releases](https://github.com/stabldev/dusk
 
 Dusk Control combines two brightness approaches behind a single slider:
 
-<img width="703" height="336" alt="image" src="https://github.com/user-attachments/assets/47e1f222-52dd-4122-b6c3-b3050c1c4dab" />
+<img width="703" height="336" alt="Diagram showing Dusk Control’s slider mapping between software overlay dimming and hardware DDC/CI brightness control." src="https://github.com/user-attachments/assets/47e1f222-52dd-4122-b6c3-b3050c1c4dab" />
 
 ## Building from Source
 
