@@ -72,23 +72,3 @@ jobs:
             DuskControl.v${{ env.VERSION }}.msix
             Output/DuskControl.v${{ env.VERSION }}.exe
             DuskControl.v${{ env.VERSION }}.portable.zip
-
-      - name: Setup MSStore CLI
-        uses: microsoft/microsoft-store-apppublisher@v1.2
-
-      - name: Publish to Microsoft Store
-        env:
-          TENANT_ID: ${{ secrets.PARTNER_CENTER_TENANT_ID }}
-          SELLER_ID: ${{ secrets.PARTNER_CENTER_SELLER_ID }}
-          CLIENT_ID: ${{ secrets.PARTNER_CENTER_CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
-          APP_ID: ${{ secrets.STORE_APP_ID }}
-        run: |
-          msstore reconfigure `
-            --tenantId "$env:TENANT_ID" `
-            --sellerId "$env:SELLER_ID" `
-            --clientId "$env:CLIENT_ID" `
-            --clientSecret "$env:CLIENT_SECRET"
-
-          msstore publish "DuskControl.v$($env:VERSION).msix" `
-            --appId "$env:APP_ID"
