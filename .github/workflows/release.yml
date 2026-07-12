@@ -90,5 +90,5 @@ jobs:
             --clientId "$env:CLIENT_ID" `
             --clientSecret "$env:CLIENT_SECRET"
 
-          msstore publish DuskControl.v${{ env.VERSION }}.msix `
+          msstore publish "DuskControl.v$($env:VERSION).msix" `
             --appId "$env:APP_ID"
