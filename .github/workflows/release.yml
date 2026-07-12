@@ -84,6 +84,5 @@ jobs:
             --clientId ${{ secrets.PARTNER_CENTER_CLIENT_ID }} `
             --clientSecret ${{ secrets.PARTNER_CENTER_CLIENT_SECRET }}
 
-          msstore publish `
-            --appId ${{ secrets.STORE_APP_ID }} `
-            --path "DuskControl.v$env:VERSION.msix"
+          msstore publish DuskControl.v${{ env.VERSION }}.msix `
+            --appId ${{ secrets.STORE_APP_ID }}
