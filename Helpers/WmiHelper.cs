@@ -46,7 +46,8 @@ internal static partial class WmiHelper
     if (_pSvc != IntPtr.Zero) return true;
 
     _ = CoInitializeEx(IntPtr.Zero, 0);
-    _ = CoInitializeSecurity(IntPtr.Zero, -1, IntPtr.Zero, IntPtr.Zero, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, IntPtr.Zero, EOAC_NONE, IntPtr.Zero);
+    int hrSec = CoInitializeSecurity(IntPtr.Zero, -1, IntPtr.Zero, IntPtr.Zero, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, IntPtr.Zero, EOAC_NONE, IntPtr.Zero);
+    if (hrSec < 0 && hrSec != unchecked((int)0x80010119)) return false; // Ignore RPC_E_TOO_LATE
 
     Guid clsid_WbemLocator = new("4590f811-1d3a-11d0-891f-00aa004b2e24");
     Guid iid_IWbemLocator = new("dc12a687-737f-11cf-884d-00aa004b2e24");
@@ -66,7 +67,12 @@ internal static partial class WmiHelper
 
     if (hr < 0 || pSvc == IntPtr.Zero) return false;
 
-    _ = CoSetProxyBlanket(pSvc, 10 /* RPC_C_AUTHN_WINNT */, 0 /* RPC_C_AUTHZ_NONE */, IntPtr.Zero, 3 /* RPC_C_AUTHN_LEVEL_CALL */, 3 /* RPC_C_IMP_LEVEL_IMPERSONATE */, IntPtr.Zero, 0 /* EOAC_NONE */);
+    hr = CoSetProxyBlanket(pSvc, 10 /* RPC_C_AUTHN_WINNT */, 0 /* RPC_C_AUTHZ_NONE */, IntPtr.Zero, 3 /* RPC_C_AUTHN_LEVEL_CALL */, 3 /* RPC_C_IMP_LEVEL_IMPERSONATE */, IntPtr.Zero, 0 /* EOAC_NONE */);
+    if (hr < 0)
+    {
+      ReleaseComObject(pSvc);
+      return false;
+    }
 
     _pSvc = pSvc;
     return true;
