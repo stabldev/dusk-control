@@ -86,4 +86,4 @@ jobs:
 
           msstore publish `
             --appId ${{ secrets.STORE_APP_ID }} `
-            --path DuskControl.v${{ env.VERSION }}.msix
+            --path "DuskControl.v$env:VERSION.msix"
