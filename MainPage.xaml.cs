@@ -19,13 +19,23 @@ public sealed partial class MainPage : Page
     _monitorService = new MonitorService();
     _overlayService = new OverlayService();
 
+    RefreshMonitors();
+  }
+
+  public void RefreshMonitors()
+  {
+    var currentSelection = MonitorComboBox.SelectedItem as MonitorInfo;
+    string? selectedName = currentSelection?.Name;
+
     var monitors = MonitorService.GetAvailableMonitors();
     MonitorComboBox.ItemsSource = monitors;
 
-    var primaryMonitor = monitors?.FirstOrDefault(m => m.IsPrimary);
-    if (primaryMonitor != null)
+    var newSelection = monitors?.FirstOrDefault(m => m.Name == selectedName)
+                       ?? monitors?.FirstOrDefault(m => m.IsPrimary);
+
+    if (newSelection != null)
     {
-      MonitorComboBox.SelectedItem = primaryMonitor;
+      MonitorComboBox.SelectedItem = newSelection;
     }
   }
 
