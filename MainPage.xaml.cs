@@ -25,12 +25,12 @@ public sealed partial class MainPage : Page
   public void RefreshMonitors()
   {
     var currentSelection = MonitorComboBox.SelectedItem as MonitorInfo;
-    string? selectedName = currentSelection?.Name;
+    string? selectedDeviceId = currentSelection?.DeviceId;
 
     var monitors = MonitorService.GetAvailableMonitors();
     MonitorComboBox.ItemsSource = monitors;
 
-    var newSelection = monitors?.FirstOrDefault(m => m.Name == selectedName)
+    var newSelection = monitors?.FirstOrDefault(m => m.DeviceId == selectedDeviceId)
                        ?? monitors?.FirstOrDefault(m => m.IsPrimary);
 
     if (newSelection != null)
