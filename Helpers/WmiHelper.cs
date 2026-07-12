@@ -39,17 +39,17 @@ internal static partial class WmiHelper
       uint dwAuthnLevel, uint dwImpLevel, IntPtr pAuthInfo, uint dwCapabilities);
 
   [ThreadStatic]
-  private static IntPtr _pSvc = IntPtr.Zero;
+  private static IntPtr _pSvc;
 
   public static unsafe bool Initialize()
   {
     if (_pSvc != IntPtr.Zero) return true;
 
-    CoInitializeEx(IntPtr.Zero, 0);
-    CoInitializeSecurity(IntPtr.Zero, -1, IntPtr.Zero, IntPtr.Zero, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, IntPtr.Zero, EOAC_NONE, IntPtr.Zero);
+    _ = CoInitializeEx(IntPtr.Zero, 0);
+    _ = CoInitializeSecurity(IntPtr.Zero, -1, IntPtr.Zero, IntPtr.Zero, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, IntPtr.Zero, EOAC_NONE, IntPtr.Zero);
 
-    Guid clsid_WbemLocator = new Guid("4590f811-1d3a-11d0-891f-00aa004b2e24");
-    Guid iid_IWbemLocator = new Guid("dc12a687-737f-11cf-884d-00aa004b2e24");
+    Guid clsid_WbemLocator = new("4590f811-1d3a-11d0-891f-00aa004b2e24");
+    Guid iid_IWbemLocator = new("dc12a687-737f-11cf-884d-00aa004b2e24");
 
     int hr = CoCreateInstance(in clsid_WbemLocator, IntPtr.Zero, 1, in iid_IWbemLocator, out IntPtr pLoc);
     if (hr < 0 || pLoc == IntPtr.Zero) return false;
@@ -66,7 +66,7 @@ internal static partial class WmiHelper
 
     if (hr < 0 || pSvc == IntPtr.Zero) return false;
 
-    CoSetProxyBlanket(pSvc, 10 /* RPC_C_AUTHN_WINNT */, 0 /* RPC_C_AUTHZ_NONE */, IntPtr.Zero, 3 /* RPC_C_AUTHN_LEVEL_CALL */, 3 /* RPC_C_IMP_LEVEL_IMPERSONATE */, IntPtr.Zero, 0 /* EOAC_NONE */);
+    _ = CoSetProxyBlanket(pSvc, 10 /* RPC_C_AUTHN_WINNT */, 0 /* RPC_C_AUTHZ_NONE */, IntPtr.Zero, 3 /* RPC_C_AUTHN_LEVEL_CALL */, 3 /* RPC_C_IMP_LEVEL_IMPERSONATE */, IntPtr.Zero, 0 /* EOAC_NONE */);
 
     _pSvc = pSvc;
     return true;
@@ -100,7 +100,7 @@ internal static partial class WmiHelper
     if (hr < 0 || uReturned == 0 || pObj == IntPtr.Zero) return null;
 
     IntPtr bstrPropName = Marshal.StringToBSTR("CurrentBrightness");
-    VARIANT varProp = new VARIANT();
+    VARIANT varProp = new();
 
     IntPtr* vtableObj = *(IntPtr**)pObj;
     var get = (delegate* unmanaged[Stdcall]<IntPtr, IntPtr, int, VARIANT*, int*, int*, int>)vtableObj[4];
@@ -164,10 +164,10 @@ internal static partial class WmiHelper
     }
 
     IntPtr bstrTimeout = Marshal.StringToBSTR("Timeout");
-    VARIANT varTimeout = new VARIANT { vt = 3 /* VT_I4 */, lVal = 0 };
+    VARIANT varTimeout = new() { vt = 3 /* VT_I4 */, lVal = 0 };
 
     IntPtr bstrBrightness = Marshal.StringToBSTR("Brightness");
-    VARIANT varBrightness = new VARIANT { vt = 17 /* VT_UI1 */, bVal = (byte)brightness };
+    VARIANT varBrightness = new() { vt = 17 /* VT_UI1 */, bVal = (byte)brightness };
 
     IntPtr* vtableInParams = *(IntPtr**)pInParams;
     var put = (delegate* unmanaged[Stdcall]<IntPtr, IntPtr, int, VARIANT*, int, int>)vtableInParams[5];
@@ -197,7 +197,7 @@ internal static partial class WmiHelper
       if (hr >= 0 && uReturned > 0 && pObj != IntPtr.Zero)
       {
         IntPtr bstrPathName = Marshal.StringToBSTR("__PATH");
-        VARIANT varPath = new VARIANT();
+        VARIANT varPath = new();
 
         IntPtr* vtableObj = *(IntPtr**)pObj;
         var get = (delegate* unmanaged[Stdcall]<IntPtr, IntPtr, int, VARIANT*, int*, int*, int>)vtableObj[4];

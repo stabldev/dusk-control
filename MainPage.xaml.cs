@@ -3,6 +3,8 @@ using Microsoft.UI.Xaml.Controls;
 using DuskControl.Models;
 using DuskControl.Services;
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
 namespace DuskControl;
 
 public sealed partial class MainPage : Page
