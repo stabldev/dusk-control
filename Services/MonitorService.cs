@@ -25,6 +25,7 @@ public class MonitorService
         monitors.Add(new MonitorInfo
         {
           Name = displayName,
+          DeviceId = mi.DeviceName,
           IsPrimary = isPrimary,
           DisplayArea = null, // Removed DisplayArea usage due to WinRT crash
           HMonitor = hMonitor

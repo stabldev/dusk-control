@@ -6,6 +6,7 @@ namespace DuskControl.Models;
 public partial class MonitorInfo
 {
   public string Name { get; set; } = string.Empty;
+  public string DeviceId { get; set; } = string.Empty;
   public bool IsPrimary { get; set; }
 
   // WinUI's DisplayArea for reference
