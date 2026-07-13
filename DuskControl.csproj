@@ -78,10 +78,19 @@
 
   <!-- Prevent WinUI from treating these directories as AppX payload -->
   <PropertyGroup>
-    <DefaultItemExcludes>$(DefaultItemExcludes);LandingPage\**;AppPackages\**;publish_output\**;.github\**;.agents\**;.vscode\**;.gitignore;AGENTS.md;build-msix.ps1;skills-lock.json;installer.iss</DefaultItemExcludes>
+    <DefaultItemExcludes>$(DefaultItemExcludes);LandingPage\**;AppPackages\**;publish_output\**;.github\**;.agents\**;.vscode\**;.gitignore;AGENTS.md;build-msix.ps1;bump-version.ps1;*.msix;skills-lock.json;installer.iss</DefaultItemExcludes>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="LandingPage\**" />
     <None Remove="LandingPage\**" />
   </ItemGroup>
+
+  <!-- Remove unnecessary language folders from the publish output to reduce size -->
+  <Target Name="RemoveMuiFolders" AfterTargets="Publish">
+    <ItemGroup>
+      <MuiFiles Include="$(PublishDir)**\*.mui" Exclude="$(PublishDir)en-us\*.mui;$(PublishDir)en-US\*.mui" />
+      <MuiFolders Include="@(MuiFiles->'%(RootDir)%(Directory)')" />
+    </ItemGroup>
+    <RemoveDir Directories="@(MuiFolders)" />
+  </Target>
 </Project>
