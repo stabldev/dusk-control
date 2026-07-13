@@ -24,6 +24,8 @@ public sealed partial class MainPage : Page
 
   public void RefreshMonitors()
   {
+    SlideUpStoryboard.Begin();
+
     var currentSelection = MonitorComboBox.SelectedItem as MonitorInfo;
     string? selectedDeviceId = currentSelection?.DeviceId;
 
