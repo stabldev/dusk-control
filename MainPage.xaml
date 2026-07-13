@@ -14,9 +14,9 @@
       <DoubleAnimation
         Storyboard.TargetName="RootTransform"
         Storyboard.TargetProperty="Y"
-        From="40"
+        From="30"
         To="0"
-        Duration="0:0:0.4">
+        Duration="0:0:0.3">
         <DoubleAnimation.EasingFunction>
           <ExponentialEase EasingMode="EaseOut" Exponent="6" />
         </DoubleAnimation.EasingFunction>
