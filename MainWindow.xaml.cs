@@ -64,21 +64,9 @@ public sealed partial class MainWindow : Window
     // Navigate the root frame to the main page on startup.
     RootFrame.Navigate(typeof(MainPage));
 
-    AppWindow.Changed += AppWindow_Changed;
-
     // Initialize Tray Icon and intercept close
     _trayService = new TrayService(this);
     Closed += MainWindow_Closed;
-  }
-
-  private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
-  {
-    if (args.DidVisibilityChange && sender.IsVisible)
-    {
-      if (RootFrame.Content is MainPage mainPage)
-      {
-      }
-    }
   }
 
   private void MainWindow_Closed(object sender, WindowEventArgs args)
