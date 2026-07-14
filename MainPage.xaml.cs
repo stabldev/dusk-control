@@ -24,6 +24,8 @@ public sealed partial class MainPage : Page
 
   public void RefreshMonitors()
   {
+    SlideUpStoryboard.Begin();
+
     var currentSelection = MonitorComboBox.SelectedItem as MonitorInfo;
     string? selectedDeviceId = currentSelection?.DeviceId;
 
@@ -37,6 +39,11 @@ public sealed partial class MainPage : Page
     {
       MonitorComboBox.SelectedItem = newSelection;
     }
+  }
+
+  public void PlayAnimation()
+  {
+    SlideUpStoryboard.Begin();
   }
 
   private void MonitorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

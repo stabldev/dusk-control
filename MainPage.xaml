@@ -8,7 +8,35 @@
   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
   xmlns:models="using:DuskControl.Models"
   mc:Ignorable="d">
-  <Grid Padding="14" IsTabStop="True">
+
+  <Page.Resources>
+    <Storyboard x:Name="SlideUpStoryboard">
+      <DoubleAnimation
+        Storyboard.TargetName="RootTransform"
+        Storyboard.TargetProperty="Y"
+        From="40"
+        To="0"
+        Duration="0:0:0.4">
+        <DoubleAnimation.EasingFunction>
+          <ExponentialEase EasingMode="EaseOut" Exponent="6" />
+        </DoubleAnimation.EasingFunction>
+      </DoubleAnimation>
+      <DoubleAnimation
+        Storyboard.TargetName="RootGrid"
+        Storyboard.TargetProperty="Opacity"
+        From="0"
+        To="1"
+        Duration="0:0:0.3" />
+    </Storyboard>
+  </Page.Resources>
+
+  <Grid
+    x:Name="RootGrid"
+    Padding="14"
+    IsTabStop="True">
+    <Grid.RenderTransform>
+      <TranslateTransform x:Name="RootTransform" Y="40" />
+    </Grid.RenderTransform>
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto" />
       <RowDefinition Height="*" />
