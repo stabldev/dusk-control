@@ -77,7 +77,6 @@ public sealed partial class MainWindow : Window
     {
       if (RootFrame.Content is MainPage mainPage)
       {
-        mainPage.RefreshMonitors();
       }
     }
   }
@@ -110,6 +109,14 @@ public sealed partial class MainWindow : Window
       int x = workArea.X + workArea.Width - AppWindow.Size.Width - padding;
       int y = workArea.Y + workArea.Height - AppWindow.Size.Height - padding;
       AppWindow.Move(new Windows.Graphics.PointInt32(x, y));
+    }
+  }
+
+  public void ForceRefreshMonitors()
+  {
+    if (RootFrame.Content is MainPage mainPage)
+    {
+      mainPage.RefreshMonitors();
     }
   }
 
