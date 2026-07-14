@@ -12,8 +12,6 @@ public sealed partial class MainPage : Page
   private readonly MonitorService _monitorService;
   private readonly OverlayService _overlayService;
   private bool _isUpdatingUI = false;
-  private List<MonitorInfo>? _cachedMonitors;
-  private readonly Dictionary<IntPtr, (uint? Brightness, uint? Contrast)> _cachedHardwareValues = [];
 
   public MainPage()
   {
@@ -28,93 +26,45 @@ public sealed partial class MainPage : Page
   {
     SlideUpStoryboard.Begin();
 
-    // 1. Show Stale Data Instantly
-    if (_cachedMonitors != null && _cachedMonitors.Count > 0)
-    {
-      MonitorComboBox.ItemsSource = _cachedMonitors;
-      MonitorComboBox.SelectedItem ??= _cachedMonitors.FirstOrDefault(m => m.IsPrimary);
-    }
-
-    // 2. Revalidate Async
-    _ = RevalidateMonitorsAsync();
-  }
-
-  private async Task RevalidateMonitorsAsync()
-  {
     var currentSelection = MonitorComboBox.SelectedItem as MonitorInfo;
     string? selectedDeviceId = currentSelection?.DeviceId;
 
-    var monitors = await Task.Run(() => MonitorService.GetAvailableMonitors());
+    var monitors = MonitorService.GetAvailableMonitors();
+    MonitorComboBox.ItemsSource = monitors;
 
-    DispatcherQueue.TryEnqueue(() =>
+    var newSelection = monitors?.FirstOrDefault(m => m.DeviceId == selectedDeviceId)
+                       ?? monitors?.FirstOrDefault(m => m.IsPrimary);
+
+    if (newSelection != null)
     {
-      _cachedMonitors = monitors;
-      MonitorComboBox.ItemsSource = monitors;
-
-      var newSelection = monitors?.FirstOrDefault(m => m.DeviceId == selectedDeviceId)
-                         ?? monitors?.FirstOrDefault(m => m.IsPrimary);
-
-      if (newSelection != null)
-      {
-        MonitorComboBox.SelectedItem = newSelection;
-      }
-    });
+      MonitorComboBox.SelectedItem = newSelection;
+    }
   }
 
   private void MonitorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
     {
-      var hMonitor = selectedMonitor.HMonitor;
-
-      // 1. Show Stale Data Instantly
-      if (_cachedHardwareValues.TryGetValue(hMonitor, out var cachedVals))
+      _isUpdatingUI = true;
+      var brightness = MonitorService.GetBrightness(selectedMonitor.HMonitor);
+      if (brightness.HasValue && BrightnessSlider != null)
       {
-        UpdateSliders(cachedVals.Brightness, cachedVals.Contrast);
+        BrightnessSlider.Value = brightness.Value;
       }
 
-      // 2. Revalidate Async
-      _ = RevalidateHardwareValuesAsync(hMonitor);
-    }
-  }
-
-  private async Task RevalidateHardwareValuesAsync(IntPtr hMonitor)
-  {
-    var (brightness, contrast) = await Task.Run(() =>
-    {
-      return (MonitorService.GetBrightness(hMonitor), MonitorService.GetContrast(hMonitor));
-    });
-
-    DispatcherQueue.TryEnqueue(() =>
-    {
-      if (MonitorComboBox.SelectedItem is MonitorInfo currentMonitor && currentMonitor.HMonitor == hMonitor)
+      var contrast = MonitorService.GetContrast(selectedMonitor.HMonitor);
+      if (contrast.HasValue)
       {
-        _cachedHardwareValues[hMonitor] = (brightness, contrast);
-        UpdateSliders(brightness, contrast);
+        if (ContrastSlider != null) ContrastSlider.Value = contrast.Value;
+        if (ContrastPanel != null) ContrastPanel.Visibility = Visibility.Visible;
       }
-    });
-  }
+      else
+      {
+        if (ContrastPanel != null) ContrastPanel.Visibility = Visibility.Collapsed;
+      }
 
-  private void UpdateSliders(uint? brightness, uint? contrast)
-  {
-    _isUpdatingUI = true;
-
-    if (brightness.HasValue && BrightnessSlider != null)
-    {
-      BrightnessSlider.Value = brightness.Value;
+      _isUpdatingUI = false;
     }
-
-    if (contrast.HasValue)
-    {
-      if (ContrastSlider != null) ContrastSlider.Value = contrast.Value;
-      if (ContrastPanel != null) ContrastPanel.Visibility = Visibility.Visible;
-    }
-    else
-    {
-      if (ContrastPanel != null) ContrastPanel.Visibility = Visibility.Collapsed;
-    }
-
-    _isUpdatingUI = false;
   }
 
   private void BrightnessSlider_ValueChanged(object sender, Microsoft.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
