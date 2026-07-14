@@ -55,8 +55,7 @@ public partial class TrayService : IDisposable
       var mouseMsg = (uint)lParam.ToInt32();
       if (mouseMsg == Win32.WM_LBUTTONUP)
       {
-        _window.AppWindow.Show();
-        Win32.SetForegroundWindow(_hWnd);
+        BringWindowToFront();
       }
       else if (mouseMsg == Win32.WM_RBUTTONUP)
       {
@@ -73,6 +72,7 @@ public partial class TrayService : IDisposable
     if (hMenu == IntPtr.Zero) return;
 
     Win32.AppendMenu(hMenu, Win32.MF_STRING, 1001, "Show Window");
+    Win32.AppendMenu(hMenu, Win32.MF_STRING, 1004, "Refresh displays");
 
     uint startWithWindowsFlags = Win32.MF_STRING | (SettingsService.StartWithWindows ? Win32.MF_CHECKED : Win32.MF_UNCHECKED);
     Win32.AppendMenu(hMenu, startWithWindowsFlags, 1003, "Start with Windows");
@@ -87,8 +87,15 @@ public partial class TrayService : IDisposable
 
     if (selectedId == 1001)
     {
-      _window.AppWindow.Show();
-      Win32.SetForegroundWindow(_hWnd);
+      BringWindowToFront();
+    }
+    else if (selectedId == 1004)
+    {
+      if (_window is MainWindow mainWindow)
+      {
+        BringWindowToFront();
+        mainWindow.ForceRefreshMonitors();
+      }
     }
     else if (selectedId == 1003)
     {
@@ -127,5 +134,11 @@ public partial class TrayService : IDisposable
     }
 
     _isDisposed = true;
+  }
+
+  private void BringWindowToFront()
+  {
+    _window.AppWindow.Show();
+    Win32.SetForegroundWindow(_hWnd);
   }
 }
