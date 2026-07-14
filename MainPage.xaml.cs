@@ -41,6 +41,11 @@ public sealed partial class MainPage : Page
     }
   }
 
+  public void PlayAnimation()
+  {
+    SlideUpStoryboard.Begin();
+  }
+
   private void MonitorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
   {
     if (MonitorComboBox.SelectedItem is MonitorInfo selectedMonitor)
