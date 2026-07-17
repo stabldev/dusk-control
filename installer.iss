@@ -33,5 +33,23 @@ Source: "bin\Release\net10.0-windows10.0.26100.0\win-x64\publish\*"; DestDir: "{
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
+[Registry]
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "DuskControl"; ValueData: """{app}\{#MyAppExeName}"""; Flags: uninsdeletevalue; Check: IsStartupEnabled
+
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+
+[Code]
+function IsStartupEnabled: Boolean;
+var
+  StartupValue: Cardinal;
+begin
+  if RegQueryDWordValue(HKEY_CURRENT_USER, 'Software\DuskControl', 'StartWithWindows', StartupValue) then
+  begin
+    Result := (StartupValue <> 0);
+  end
+  else
+  begin
+    Result := True; // Default to true on fresh install
+  end;
+end;
