@@ -71,7 +71,6 @@ public partial class TrayService : IDisposable
     IntPtr hMenu = Win32.CreatePopupMenu();
     if (hMenu == IntPtr.Zero) return;
 
-    Win32.AppendMenu(hMenu, Win32.MF_STRING, 1001, "Show Window");
     Win32.AppendMenu(hMenu, Win32.MF_STRING, 1004, "Refresh displays");
 
     uint startWithWindowsFlags = Win32.MF_STRING | (SettingsService.StartWithWindows ? Win32.MF_CHECKED : Win32.MF_UNCHECKED);
@@ -85,11 +84,7 @@ public partial class TrayService : IDisposable
     int selectedId = Win32.TrackPopupMenu(hMenu, Win32.TPM_LEFTALIGN | Win32.TPM_RIGHTBUTTON | Win32.TPM_RETURNCMD, pt.x, pt.y, 0, _hWnd, IntPtr.Zero);
     Win32.DestroyMenu(hMenu);
 
-    if (selectedId == 1001)
-    {
-      BringWindowToFront();
-    }
-    else if (selectedId == 1004)
+    if (selectedId == 1004)
     {
       if (_window is MainWindow mainWindow)
       {
