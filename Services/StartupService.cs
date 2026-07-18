@@ -20,7 +20,7 @@ public class StartupService
         var exePath = Process.GetCurrentProcess().MainModule?.FileName;
         if (!string.IsNullOrEmpty(exePath))
         {
-          key.SetValue(AppName, $"\"{exePath}\"");
+          key.SetValue(AppName, $"\"{exePath}\" --hidden");
         }
       }
       else
